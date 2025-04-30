@@ -1,0 +1,74 @@
+[
+    {
+        "Code": "1463",
+        "Name": "強盛新",
+        "TradeVolume": "1329173",
+        "TradeValue": "38246214",
+        "OpeningPrice": "29.90",
+        "HighestPrice": "30.00",
+        "LowestPrice": "27.80",
+        "ClosingPrice": "27.80",
+        "Change": "-2.1000",
+        "Transaction": "1584"
+    },
+    {
+        "Code": "1617",
+        "Name": "榮星",
+        "TradeVolume": "3962957",
+        "TradeValue": "78531028",
+        "OpeningPrice": "18.50",
+        "HighestPrice": "20.00",
+        "LowestPrice": "18.35",
+        "ClosingPrice": "20.00",
+        "Change": "1.8000",
+        "Transaction": "1501"
+    },
+    {
+        "Code": "2314",
+        "Name": "台揚",
+        "TradeVolume": "14557561",
+        "TradeValue": "184016154",
+        "OpeningPrice": "11.75",
+        "HighestPrice": "14.35",
+        "LowestPrice": "11.75",
+        "ClosingPrice": "14.35",
+        "Change": "1.3000",
+        "Transaction": "5356"
+    },
+    {
+        "Code": "2337",
+        "Name": "旺宏",
+        "TradeVolume": "108213406",
+        "TradeValue": "2445421570",
+        "OpeningPrice": "21.80",
+        "HighestPrice": "23.30",
+        "LowestPrice": "21.10",
+        "ClosingPrice": "23.25",
+        "Change": "1.9500",
+        "Transaction": "37928"
+    },
+    {
+        "Code": "3701",
+        "Name": "大眾控",
+        "TradeVolume": "6165611",
+        "TradeValue": "255548642",
+        "OpeningPrice": "42.90",
+        "HighestPrice": "43.45",
+        "LowestPrice": "39.45",
+        "ClosingPrice": "39.45",
+        "Change": "-4.0000",
+        "Transaction": "3870"
+    },
+    {
+        "Code": "6477",
+        "Name": "安集",
+        "TradeVolume": "2664498",
+        "TradeValue": "95420279",
+        "OpeningPrice": "37.05",
+        "HighestPrice": "37.35",
+        "LowestPrice": "34.80",
+        "ClosingPrice": "34.90",
+        "Change": "-2.4500",
+        "Transaction": "1959"
+    }
+]

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/home.css">
+    <title>Stock Martket Emperor</title>
+
+    <script src="/js/vue@3.2.47-prod.js" defer></script>
+    <script src="/js/template.js" defer></script>
+    <!-- <script src="/js/chartjs-adapter-date-fn@3.0.0.js"></script> -->
+    <!-- <script src="/js/chartjs@4.4.9.js" ></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+
+</head>
+<body>
+    <header id="header" class="header container" v-cloak></header>
+    
+    <main class="container">
+        <div style="font-size:28pt">Did you see the patterns?</div>
+        <div>These data is going to predict next 30 days</div>
+        <canvas id="myChart_0" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
+        <canvas id="myChart_1" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
+        <canvas id="myChart_2" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
+        <canvas id="myChart_3" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
+        <!-- <canvas id="myChart_1"></canvas> -->
+    </main>
+
+    <footer id="footer" class="footer container" v-cloak></footer>
+    <!-- <script src="/js/chartjs@2.8.0.js" defer></script> -->
+   
+    <script src="/js/home.js"></script>
+
+
+</body>
+</html>

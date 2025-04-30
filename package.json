@@ -1,0 +1,26 @@
+{
+  "name": "god_of_stockmarket",
+  "version": "1.0.0",
+  "description": "stock market king is ME",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/main.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init": "node database/main.js && node database/insertFakeData.js"
+  },
+  "author": "Ender",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.4.9",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "pg": "^8.14.1",
+    "uuid": "^11.1.0"
+  }
+}

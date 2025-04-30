@@ -1,0 +1,56 @@
+require('dotenv').config()
+const path = require('path')
+const {exec} = require('child_process')
+// const { stderr } = require('process')
+
+// const getAuth = () => {
+//     return null
+// }
+
+const postAuth = async (req, res) => {
+    try {
+        const username = req.body.username
+        const password = req.body.password
+
+        if (!username || !password) {
+            return res.status(400).json({
+                msg: "Username or Password is required"
+            })
+        }
+
+        if (username == 'Ender' && password == '789') {
+            let stock_id = req.body.stock_id || '2330'
+            console.log(stock_id)
+            // const target = path.join(__dirname, '..', 'models/test.py')
+            const target = path.join(__dirname, '..', 'models/main.py')
+            console.log(target)
+            
+            const command = `python ${target} ${stock_id}`
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`)
+                    return
+                  }
+                  console.log(`stdout: ${stdout}`)
+                  console.error(`stderr: ${stderr}`)
+            })
+            // console.log(result)
+            res.status(200).json({
+                msg: 'ok'
+            })
+        }
+  
+    
+    } catch (err) {
+        console.log(err)
+        return res.sendStatus(500).json( {
+            msg: "Server Error."
+        })
+    }
+}
+
+module.exports = {
+    postAuth
+}
+
+

@@ -43,24 +43,29 @@
 
 
 // let stock_id = {'name': '2120'}
-let stock_id_sets = ['2120', '1120', '1120']
-let result = []
-let check_repaet_data_set = new Set()
+// let stock_id_sets = ['2120', '1120', '1120']
+// let result = []
+// let check_repaet_data_set = new Set()
 
-for (stock_id of stock_id_sets) {
-    if (!check_repaet_data_set.has(stock_id)) {
-        result.push(stock_id)
-        check_repaet_data_set.add(stock_id)
-    }
-}
-
-
-stock_id = 123
-console.log(String(stock_id))
-
-console.log((result))
+// for (stock_id of stock_id_sets) {
+//     if (!check_repaet_data_set.has(stock_id)) {
+//         result.push(stock_id)
+//         check_repaet_data_set.add(stock_id)
+//     }
+// }
 
 
-console.log(Array.isArray(stock_id))
-console.warn(typeof(stock_id))
-console.log(typeof(typeof(stock_id)))
+// stock_id = 123
+// console.log(String(stock_id))
+
+// console.log((result))
+
+
+// console.log(Array.isArray(stock_id))
+// console.warn(typeof(stock_id))
+// console.log(typeof(typeof(stock_id)))
+
+
+
+console.log(2**4)
+console.log(2^4)

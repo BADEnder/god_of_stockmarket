@@ -9,6 +9,6 @@ const pythonExecAPIController = require('../../controllers/pythonExecAPIControll
 // exec(`python pyDLmodle/main.py ${stock_id}`)
 
 router.route('/')
-    .post(pythonExecAPIController.postAuth)
+    .post(pythonExecAPIController.postToRunModel)
 
 module.exports = router

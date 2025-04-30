@@ -15,7 +15,7 @@ const main = async function(stock_id) {
     console.log(req_body)
     // console.log(req_body)
     const getData = await fetch(
-        'http://127.0.0.1/api/getStockMarketDataRoute', {
+        'http://127.0.0.1/api/getStockMarketData', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -143,8 +143,8 @@ const submit_stock_id_search = async (event) => {
     const stock_id_sets = document.querySelector('#stock_id')
     let result = []
     let target_stock_id = stock_id_sets.value.split(',').map( (val) => {
-            return Number(val.trim())
-    })
+            return val.trim()
+            })
 
     for (let val of target_stock_id) {
         if (STOCK_ID_ALREADY_GET.has(val)) {

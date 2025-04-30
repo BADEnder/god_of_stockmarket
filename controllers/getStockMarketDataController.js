@@ -46,8 +46,13 @@ const handle_stock_id_to_data = async (stock_id, res) => {
         stock_id_sets = checkout_stock_id_type_and_filter_repeat(stock_id)
         
         for (let idx in stock_id_sets) {
-            let read_data = await fsPromise.readFile(path.join('data', `result_${stock_id_sets[idx]}.json`), 'utf-8', (err, data) => {
-            })
+            let filepath = path.join('data', `result_${stock_id_sets[idx]}.json`)
+            console.log(filepath)
+            if (!fs.existsSync(filepath)) {
+                console.log(`result_${stock_id_sets[idx]}.json not exist`)
+                continue
+            }
+            let read_data = await fsPromise.readFile(filepath, 'utf-8', (err, data) => {})
             read_data = JSON.parse(read_data)
             read_data = {
                 ...read_data[0]

@@ -25,8 +25,9 @@ app.use('/', require('./routes/homeRoutes'))
 
 
 // APIs
-app.use('/api/getStockMarketDataRoute', require('./routes/api/getStockMarketDataRoute'))
-app.use('/api/pythonExecAPIRoute', require('./routes/api/pythonExecAPIRoute'))
+app.use('/api/getDataFromOpenSite', require('./routes/api/getDataFromOpenSiteRoute'))
+app.use('/api/getStockMarketData', require('./routes/api/getStockMarketDataRoute'))
+app.use('/api/pythonExecAPI', require('./routes/api/pythonExecAPIRoute'))
 
 app.all('*', (req, res) => {
     res.status(404)

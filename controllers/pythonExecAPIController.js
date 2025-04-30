@@ -7,7 +7,7 @@ const {exec} = require('child_process')
 //     return null
 // }
 
-const postAuth = async (req, res) => {
+const postToRunModel = async (req, res) => {
     try {
         const username = req.body.username
         const password = req.body.password
@@ -38,6 +38,10 @@ const postAuth = async (req, res) => {
             res.status(200).json({
                 msg: 'ok'
             })
+        } else {
+            res.status(401).json({
+                msg: 'Unauthorized'
+            })
         }
   
     
@@ -50,7 +54,7 @@ const postAuth = async (req, res) => {
 }
 
 module.exports = {
-    postAuth
+    postToRunModel
 }
 
 

@@ -7,6 +7,6 @@ const getStockMarketDataController = require('../../controllers/getStockMarketDa
 
 router.route('/')
     .get(getStockMarketDataController.getStockMartketData)
-    .post(getStockMarketDataController.postStockMartketData)
+    .all(getStockMarketDataController.postStockMartketData)
 
 module.exports = router

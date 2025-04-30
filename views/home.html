@@ -20,13 +20,25 @@
     <header id="header" class="header container" v-cloak></header>
     
     <main class="container">
+        
         <div style="font-size:28pt">Did you see the patterns?</div>
         <div>These data is going to predict next 30 days</div>
-        <canvas id="myChart_0" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
-        <canvas id="myChart_1" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
-        <canvas id="myChart_2" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
-        <canvas id="myChart_3" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>
-        <!-- <canvas id="myChart_1"></canvas> -->
+        
+        <!-- <div class="center"> -->
+            <!-- <div class="border p-3"> -->
+                <div class="m-2 h3">Seach</div>
+                <hr>
+                <label class="m-2" for="stock_id" >Stock_id</label>
+                <input class="m-2" type="text" id="stock_id">
+    
+                <button class="m-2" id="submit" class="btn" onclick="submit_stock_id_search(event)">Submit</button>
+                <br>
+            <!-- </div> -->
+        <!-- </div> -->
+
+        <div id="graph-container">
+        </div>
+
     </main>
 
     <footer id="footer" class="footer container" v-cloak></footer>

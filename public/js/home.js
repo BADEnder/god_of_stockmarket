@@ -1,13 +1,18 @@
+const STOCK_ID_ALREADY_GET = new Set()
 
-const main = async function() {
+
+const main = async function(stock_id) {
 
 
     let req_body = JSON.stringify({
-        stock_id: [2330, 2337, 6220, 6620]
+        stock_id: stock_id || [2330, 2337, 6220, 6620]
         // stock_id: [2330, 2337, 6220]
         // stock_id: [2330, 2337]
         // stock_id: [2337]
+        
     })
+
+    console.log(req_body)
     // console.log(req_body)
     const getData = await fetch(
         'http://127.0.0.1/api/getStockMarketDataRoute', {
@@ -24,19 +29,27 @@ const main = async function() {
     
     const final_result = await getData.json()
 
-    // final_result[0]['x_predict'] = final_result[0]['x_predict'].map((val) => {return new Date(val / 1000000)})
-    // final_result[0]['x_real'] = final_result[0]['x_real'].map((val) => {return new Date(val / 1000000)})
 
     console.warn('final_result: ', final_result)
 
+    let graph_container =  document.querySelector(`#graph-container`)
+    // console.log(graph_container)
     for (let idx in final_result) {
+        
         let obj = final_result[idx]
         let data = {
             real: obj['datasets']['real'],
             predict: obj['datasets']['predict']
     
         }
-        let ctx = document.querySelector(`#myChart_${idx}`).getContext('2d')
+
+        let ctx = document.createElement('canvas')
+        // ctx.id = `myChart_${idx}`
+        ctx.innerHTML = `<canvas id="myChart_${idx}" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>`
+        graph_container.appendChild(ctx)
+        ctx = ctx.getContext('2d')
+        
+        // ctx = document.querySelector(`#myChart_${idx}`).getContext('2d')
     
         data = {
             datasets: [
@@ -121,4 +134,34 @@ const main = async function() {
 
 }
 
-main()
+
+
+const submit_stock_id_search = async (event) => {
+    
+    console.log(event)
+    // event.preventDefault()
+    const stock_id_sets = document.querySelector('#stock_id')
+    let result = []
+    let target_stock_id = stock_id_sets.value.split(',').map( (val) => {
+            return Number(val.trim())
+    })
+
+    for (let val of target_stock_id) {
+        if (STOCK_ID_ALREADY_GET.has(val)) {
+            alert(`TARGET ${val} ALREADY EXIST!`)
+        } else {
+            result.push(val)
+            STOCK_ID_ALREADY_GET.add(val)
+
+        }
+    }
+    stock_id_sets.value = ''
+    if (result.length != 0) {
+        console.log(result)
+        main(result)
+    }
+
+}
+
+
+// main()

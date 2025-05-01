@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const fsPromise = fs.promises
 const dateFns = require('date-fns')
-
+const {checkout_stock_id_type_and_filter_repeat} = require('./usefulFunForStock_id')
 const getStockMartketData = async (req, res) => {
 
     try {
@@ -19,32 +19,13 @@ const getStockMartketData = async (req, res) => {
 }
 
 
-const checkout_stock_id_type_and_filter_repeat = (stock_id_sets) => {
-    if (typeof(stock_id_sets) == 'string' ||
-        typeof(stock_id_sets) == 'number' 
-        ) {
-        stock_id_sets = [String(stock_id_sets)]
-    } else if (!Array.isArray(stock_id_sets)) {
-        return null
-    }
-
-    let non_repeat_stock_sets = []
-    let check_repaet_data_set = new Set()
-    
-    for (stock_id of stock_id_sets) {
-        if (!check_repaet_data_set.has(stock_id)) {
-            non_repeat_stock_sets.push(stock_id)
-            check_repaet_data_set.add(stock_id)
-        }
-    }
-    
-    return non_repeat_stock_sets
-}
 const handle_stock_id_to_data = async (stock_id, res) => {
     try {
         let result = []
         stock_id_sets = checkout_stock_id_type_and_filter_repeat(stock_id)
-        
+        console.log('stock_id_sets:\n',stock_id_sets)
+        console.log('stock_id_sets.length:\n',stock_id_sets.length)
+        console.log('typeof(stock_id_sets):\n',typeof(stock_id_sets))
         for (let idx in stock_id_sets) {
             let filepath = path.join('data', `result_${stock_id_sets[idx]}.json`)
             console.log(filepath)

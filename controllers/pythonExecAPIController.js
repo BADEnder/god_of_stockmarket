@@ -20,12 +20,13 @@ const postToRunModel = async (req, res) => {
 
         if (username == 'Ender' && password == '789') {
             let stock_id = req.body.stock_id || '2330'
-            console.log(stock_id)
-            // const target = path.join(__dirname, '..', 'models/test.py')
-            const target = path.join(__dirname, '..', 'models/main.py')
-            console.log(target)
+            let stock_name = req.body.stock_name || 'TSMC'
+            const target = path.join(__dirname, '..', 'models/test.py')
+            // const target = path.join(__dirname, '..', 'models/main.py')
             
-            const command = `python ${target} ${stock_id}`
+            const command = `chcp 65001 && python ${target} ${stock_id} ${stock_name}`
+            
+            console.log(command)
             exec(command, (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`)
@@ -34,7 +35,7 @@ const postToRunModel = async (req, res) => {
                   console.log(`stdout: ${stdout}`)
                   console.error(`stderr: ${stderr}`)
             })
-            // console.log(result)
+            
             res.status(200).json({
                 msg: 'ok'
             })

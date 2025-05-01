@@ -5,14 +5,13 @@ const main = async function(stock_id) {
 
 
     let req_body = JSON.stringify({
-        stock_id: stock_id || [2330, 2337, 6220, 6620]
+        stock_id: stock_id || [2330]
         // stock_id: [2330, 2337, 6220]
         // stock_id: [2330, 2337]
         // stock_id: [2337]
         
     })
 
-    console.log(req_body)
     // console.log(req_body)
     const getData = await fetch(
         'http://127.0.0.1/api/getStockMarketData', {
@@ -25,18 +24,36 @@ const main = async function(stock_id) {
 
     )
 
+    // let seach_name_body = {
+    //     stock_id: stock_id
+    // }
+    const getStockName = await fetch(
+        'http://127.0.0.1/api/getOtherInfoForStockMarket', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: req_body
+        }
+
+    )
+
+    console.warn('req_body:', req_body)
+
 
     
     const final_result = await getData.json()
-
+    const refer_result = await getStockName.json()
 
     console.warn('final_result: ', final_result)
+    console.warn('refer_result: ', refer_result)
 
     let graph_container =  document.querySelector(`#graph-container`)
     // console.log(graph_container)
     for (let idx in final_result) {
         
         let obj = final_result[idx]
+        let ref_obj = refer_result[idx]
         let data = {
             real: obj['datasets']['real'],
             predict: obj['datasets']['predict']
@@ -88,7 +105,7 @@ const main = async function(stock_id) {
             plugins: {
                 title: {
                     display: true,
-                    text: `Stock ID: ${obj['stock_id']}`,
+                    text: `Stock ID: ${obj['stock_id']}, Stock Name: ${ref_obj['Name']}`,
                     font: {
                         size: 24,
                     }

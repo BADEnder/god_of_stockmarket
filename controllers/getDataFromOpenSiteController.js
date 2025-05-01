@@ -36,7 +36,7 @@ const desideWebsiteCore = async(data) => {
     
     
         const today = date_fns.format(new Date(), 'yyyyMMdd')
-        const fileDirectory = path.join(__dirname, '..', 'data', `result_${today}`)
+        const fileDirectory = path.join(__dirname, '..', 'data', `real_data_${today}`)
     
         if (!fs.existsSync(fileDirectory)) {
             await fsPromise.mkdir(fileDirectory)
@@ -46,7 +46,7 @@ const desideWebsiteCore = async(data) => {
 
 
         // const filename = path.join(fileDirectory, 'master.json')
-        const filename_all_data = path.join(__dirname, '..', 'data', `result_${today}`, 'all_data.json')
+        const filename_all_data = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
         
         await fsPromise.writeFile(filename_all_data, JSON.stringify(data, null, 4))
 

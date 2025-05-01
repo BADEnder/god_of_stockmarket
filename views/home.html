@@ -21,11 +21,12 @@
     
     <main class="container">
         
-        <div style="font-size:28pt">Did you see the patterns?</div>
-        <div>These data is going to predict next 30 days</div>
+        <div class="m-2 center" style="font-size:28pt">Did you see the patterns?</div>
+        <div class="m-2 center">Input stock_id and the model is going to predict next 30 days.</div>
+        <div class="m-2 center" style="font-weight: bold;">※ Maximum inputs is 10 each times.</div>
         
-        <!-- <div class="center"> -->
-            <!-- <div class="border p-3"> -->
+        <div class="center">
+            <div class="border p-3">
                 <div class="m-2 h3">Seach</div>
                 <hr>
                 <label class="m-2" for="stock_id" >Stock_id</label>
@@ -33,8 +34,8 @@
     
                 <button class="m-2" id="submit" class="btn" onclick="submit_stock_id_search(event)">Submit</button>
                 <br>
-            <!-- </div> -->
-        <!-- </div> -->
+            </div>
+        </div>
 
         <div id="graph-container">
         </div>

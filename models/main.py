@@ -24,20 +24,23 @@ def main():
 
             argv = sys.argv
             # Setting global variable
-            # # TSMC DEFAULT
+            stock_name = 'TSMC'
             stock_id = '2330' 
             # # 漢達
             # stock_id = '6620'
             # SUNON
             # stock_id = '2421'
             if len(argv) > 1:
-                stock_id = argv[1] 
+                stock_id = argv[1]
+                if len(argv) >2: 
+                    stock_name = argv[2]
+                else: 
+                    stock_name = None
+            return stock_id, stock_name
 
-            return stock_id
+        stock_id, stock_name = set_target_for_model()
 
-        stock_id = set_target_for_model()
-
-        print(f'target stock id is. {stock_id}')
+        print(f'target stock id and stock_name is. {stock_id}, {stock_name}')
         years = 3
         time_steps = 5
         no_needed_columns = ['stock_id', 'Trading_money', 'Trading_turnover', 'date', 'open', 'max', 'min', 'spread']
@@ -186,6 +189,7 @@ def main():
         result = [
             {
                 "stock_id": stock_id,
+                "stock_name": stock_name,
                 "x_real": date_showed_for_real.reshape(-1).tolist(),
                 "x_predict": date_showed_for_predict.reshape(-1).tolist(),
                 "y_real": y_train.reshape(-1).tolist(),
@@ -196,7 +200,7 @@ def main():
 
         import json
 
-        with open("./output.json", 'w', encoding="utf-8") as f:
+        with open(f"./data/result_{stock_id}.json", 'w', encoding="utf-8") as f:
             json.dump(result, f, indent=4)
 
         print('success')

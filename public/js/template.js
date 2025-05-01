@@ -44,7 +44,7 @@ const footerTemplate = Vue.createApp({
     template: 
     `
         <div>
-            <span>&copy; Copyright ${new Date().getFullYear()}</span>
+            <span>&copy; Copyright ${new Date().getFullYear()} By Ender</span>
         </div>
     `
 })

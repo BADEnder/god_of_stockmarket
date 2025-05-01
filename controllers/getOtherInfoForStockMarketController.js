@@ -22,21 +22,18 @@ const getOtherInfoForStockMarket = async (req, res) => {
 const postOtherInfoForStockMarket = async(req, res) => {
 
     try {
-        console.log('here you go')
+        // console.log('postOtherInfoForStockMarket running')
         let stock_id_sets = req.query.stock_id || req.body.stock_id
         let result = []
-        // stock_id_sets = checkout_stock_id_type_and_filter_repeat(stock_id_sets)
 
-        console.log('stock_id_sets:\n',stock_id_sets)
-        console.log('stock_id_sets.length:\n',stock_id_sets.length)
-        console.log('typeof(stock_id_sets):\n',typeof(stock_id_sets))
+        // console.log('stock_id_sets:\n',stock_id_sets)
         for (let stock_id of stock_id_sets) {
-            console.log('stock_id:\n',stock_id)
 
             const today = dateFns.format(new Date(), 'yyyyMMdd')
+
+
             const filename = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
         
-            // console.log('filename:\n',filename)
             let data = await fsPromise.readFile(filename, 'utf-8')
             data = JSON.parse(data)
         
@@ -59,7 +56,6 @@ const postOtherInfoForStockMarket = async(req, res) => {
 
     } catch (err) {
         console.error(err.name)
-        console.log(err.msg)
     }
 
 }

@@ -203,7 +203,12 @@ def main():
         with open(f"./data/result_{stock_id}.json", 'w', encoding="utf-8") as f:
             json.dump(result, f, indent=4)
 
-        print('success')
+        print('prediction success!')
+
+        with open(f"./data/runningStatus.json", 'w', encoding='utf-8') as status_file:
+            status_file.write('0')
+        
+        print('reset status Success!')
     except: 
         print('some error happen!')
 

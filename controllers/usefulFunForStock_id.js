@@ -1,4 +1,5 @@
 const checkout_stock_id_type_and_filter_repeat = (stock_id_sets) => {
+    // console.log('running checkout_stock_id_type_and_filter_repeat')
     if (typeof(stock_id_sets) == 'string' ||
         typeof(stock_id_sets) == 'number' 
         ) {
@@ -17,6 +18,7 @@ const checkout_stock_id_type_and_filter_repeat = (stock_id_sets) => {
         }
     }
     
+    // console.log('checkout_stock_id_type_and_filter_repeat success~~~!')
     return non_repeat_stock_sets
 }
 

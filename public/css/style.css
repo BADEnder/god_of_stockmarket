@@ -15,7 +15,7 @@
     --HEADER-MIN-HEIGHT: 10vh;
     --FOOTER-MIN-HEIGHT: 6vh;
 
-    --BANNER-COLOR: rgb(50, 128, 231);
+    --BANNER-COLOR: #4D3900;
 
     --FORM-WIDTH: 30%;
 }
@@ -124,10 +124,11 @@ header nav div {
 
 .nav-menu-but {
     display: none;
-    background-color:  rgba(117, 151, 243, 0.5);
+    background-color:  #976834;
+    /* background-color:  rgba(117, 151, 243, 0.5); */
     background-image: url('/img/btn-3line.svg');
-    border: 3px solid  rgb(117, 151, 243);
-    border-radius: 10px;
+    border: 1px solid  rgb(57, 0, 114);
+    border-radius: 5px;
 }
 
 .nav-menu-icon {

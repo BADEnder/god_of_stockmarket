@@ -1,47 +1,80 @@
-const topTradingVolumeData = require('../data/result_20250430/master.json')
-const allData = require('../data/result_20250430/all_data.json')
+const fs = require('fs')
+const fsPromise = fs.promises
+const path = require('path')
+
+const dateFns = require('date-fns')
+
 
 const cron = require('node-cron')
 
 
 const axios = require('axios')
 
+let stock_id
+let stock_name
 const run_major_job = async () => {
+    const today = dateFns.format(new Date(), 'yyyyMMdd')
+    const topTradingVolumeDataPath = path.join(__dirname, '..', 'data', `real_data_${today}`, 'master.json')
+    let topTradingVolumeData = await fsPromise.readFile(topTradingVolumeDataPath)
+    topTradingVolumeData = JSON.parse(topTradingVolumeData)
+
+    console.log(topTradingVolumeData.length)
+
+    // const allData = require(`../data/real_data_${today}/all_data.json`)
+
     try {
     
-        let row = topTradingVolumeData[2]
-        stock_id = row['Code']
-        stock_name = row['Name']
+        const checkJob = setInterval(async () => {
+            const runningStatusPath = path.join(__dirname, '..', 'data', 'runningStatus.json')
 
+            let runningStatusNow = await fsPromise.readFile(runningStatusPath)
+            console.log('here you not go, status: 1.')
 
-    
-        for (let idx in topTradingVolumeData) {
-            let row = topTradingVolumeData[idx]
-        }
-    
-        let body = {
-            stock_id: topTradingVolumeData[2]['Code'],
-            stock_name: topTradingVolumeData[2]['Name'],
-            username: 'Ender',
-            password: '789'
-        }
-    
-        console.log(body)
+            if (runningStatusNow == 0) {
+
+                console.log('here you go, status: 0.')
+                let row = topTradingVolumeData.shift()
+                stock_id = row['Code']
+                stock_name = row['Name']
         
-        let url = 'http://127.0.0.1/api/pythonExecAPI'
-        let response = await axios.post(
-            url,
-            body,
-            // {
-            //     'headers': {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     'timeout': 100000
-    
-            // }    
-        )
-    
-        console.log(response.data)
+                console.log('stock_id', stock_id)
+                console.log('stock_name', stock_name)
+                console.log('topTradingVolumeData.length', topTradingVolumeData.length)
+        
+                let body = {
+                    stock_id: stock_id,
+                    stock_name: stock_name,
+                    username: 'Ender',
+                    password: '789'
+                }
+            
+                console.log(body)
+                
+                let url = 'http://127.0.0.1/api/pythonExecAPI'
+                let response = await axios.post(
+                    url,
+                    body,
+                    {
+                        'headers': {
+                            'Content-Type': 'application/json',
+                        }
+                    },
+        
+                )
+        
+                // console.log('here you go!!')
+                // console.log(runningStatusPath)
+                await fsPromise.writeFile(runningStatusPath, '1', 'utf-8')
+            
+                console.log(response.data)
+            }
+
+            if (topTradingVolumeData.length == 0) {
+                clearInterval(checkJob)
+            }
+
+        }, 10*1000)
+
         
     } catch (err) {
         if (err.name == 'AxiosError') {
@@ -54,9 +87,24 @@ const run_major_job = async () => {
 
 }
 
-run_major_job()
 
-// cron.schedule('0 * * * * *', () => {
+const main = async () => {
+    const url = 'http://127.0.0.1/api/getDataFromOpenSite'
+    let response = await axios.post(url)
+    
+    console.log('dailyScheduling is running')
+    run_major_job()
+}
+
+main()
+
+// cron.schedule('0 * 01 * * *', async () => {
 //     console.log(topTradingVolumeData.length)
 //     console.log(allData.length)
+
+//     const url = 'http://127.0.0.1/api/getDataFromOpenSite'
+//     let response = await axios.post(url)
+
+//     run_major_job()
+
 // })

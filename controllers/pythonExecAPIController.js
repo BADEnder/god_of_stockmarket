@@ -19,26 +19,37 @@ const postToRunModel = async (req, res) => {
         }
 
         if (username == 'Ender' && password == '789') {
-            let stock_id = req.body.stock_id || '2330'
-            let stock_name = req.body.stock_name || 'TSMC'
-            const target = path.join(__dirname, '..', 'models/test.py')
-            // const target = path.join(__dirname, '..', 'models/main.py')
+            // 2330 TSMC
+            let stock_id = req.body.stock_id || 'UNKNOWN'
+            let stock_name = req.body.stock_name || 'UNKNOWN'
+            // const target = path.join(__dirname, '..', 'models/test.py')
+            const target = path.join(__dirname, '..', 'models/main.py')
             
-            const command = `chcp 65001 && python ${target} ${stock_id} ${stock_name}`
+            // const command = `chcp 65001 && python ${target} ${stock_id} ${stock_name}`
+            const command = `python ${target} ${stock_id} ${stock_name}`
             
-            console.log(command)
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    console.error(`exec error: ${error}`)
-                    return
-                  }
-                  console.log(`stdout: ${stdout}`)
-                  console.error(`stderr: ${stderr}`)
-            })
-            
-            res.status(200).json({
-                msg: 'ok'
-            })
+            // console.log(command)
+
+            if (stock_id != 'UNKNOWN') {
+                exec(command, (error, stdout, stderr) => {
+                    if (error) {
+                        console.error(`exec error: ${error}`)
+                        return
+                      }
+                      console.log(`stdout\n\n: ${stdout}`)
+                    //   console.error(`stderr: ${stderr}`)
+                })
+                
+                res.status(200).json({
+                    msg: 'ok'
+                })
+            } else {
+                
+                res.status(400).json({
+                    msg: 'Bad Request'
+                })
+            }
+
         } else {
             res.status(401).json({
                 msg: 'Unauthorized'

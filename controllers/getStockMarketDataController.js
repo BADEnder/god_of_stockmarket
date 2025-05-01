@@ -23,14 +23,10 @@ const handle_stock_id_to_data = async (stock_id, res) => {
     try {
         let result = []
         stock_id_sets = checkout_stock_id_type_and_filter_repeat(stock_id)
-        console.log('stock_id_sets:\n',stock_id_sets)
-        console.log('stock_id_sets.length:\n',stock_id_sets.length)
-        console.log('typeof(stock_id_sets):\n',typeof(stock_id_sets))
+
         for (let idx in stock_id_sets) {
             let filepath = path.join('data', `result_${stock_id_sets[idx]}.json`)
-            console.log(filepath)
             if (!fs.existsSync(filepath)) {
-                console.log(`result_${stock_id_sets[idx]}.json not exist`)
                 continue
             }
             let read_data = await fsPromise.readFile(filepath, 'utf-8', (err, data) => {})
@@ -38,8 +34,6 @@ const handle_stock_id_to_data = async (stock_id, res) => {
             read_data = {
                 ...read_data[0]
             }
-            // console.log('read_data:', read_data)
-            // console.log('Object.keys(read_data):', Object.keys(read_data))
             
     
             // Transfer data to date format
@@ -80,8 +74,9 @@ const handle_stock_id_to_data = async (stock_id, res) => {
         return result
     } catch(err) {
         console.error(err.name)
+        console.error(err.msg)
 
-        res.status(500).json({
+        return res.status(500).json({
             msg: 'SERVER GOT ERROR IN handle_stock_id_to_data!'
         })
     }
@@ -89,7 +84,6 @@ const handle_stock_id_to_data = async (stock_id, res) => {
     // return ['hello this is test']
 } 
 const postStockMartketData = async(req, res) => {
-
 
     let stock_id = req.query.stock_id || req.body.stock_id
     

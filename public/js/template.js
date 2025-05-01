@@ -22,7 +22,11 @@ const headerTemplate = Vue.createApp({
     template: 
     `
         
-        <div class="logo">Stock Martket Emperor</div>
+        <div class="logo" >
+            <a href="#"> 
+                Stock Martket Emperor
+            </a>
+        </div>
         <nav class="nav-menu">
             <div v-for="(item, index) in url_list">
                 <a :href="item.url"> {{item.name}} </a>

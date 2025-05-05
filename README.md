@@ -18,3 +18,7 @@
 2. `npm install`
 
 3. `npm run start`
+
+## OR Just 
+1. ./init.sh 
+2. npm run start.

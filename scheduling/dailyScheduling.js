@@ -25,7 +25,7 @@ const run_major_job = async () => {
     try {
     
         const checkJob = setInterval(async () => {
-            const runningStatusPath = path.join(__dirname, '..', 'data', 'runningStatus.json')
+            const runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.json')
 
             let runningStatusNow = await fsPromise.readFile(runningStatusPath)
             console.log('here you not go, status: 1.')

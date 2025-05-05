@@ -9,7 +9,7 @@
     "scripts": {
         "test": "node test/main.js",
         "start": "node server.js & node scheduling/dailyScheduling",
-        "schduling": "node scheduling/dailyScheduling",
+        "scheduling": "node scheduling/dailyScheduling",
         "dev": "nodemon server.js",
         "init": "node database/main.js && node database/insertFakeData.js"
     },
@@ -18,7 +18,7 @@
     "dependencies": {
         "axios": "^1.9.0",
         "chart.js": "^4.4.9",
-        "date-fns": "^4.1.0",
+        "date-fns": "^2.16.1",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "node-cron": "^3.0.3",

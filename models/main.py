@@ -205,7 +205,7 @@ def main():
 
         print('prediction success!')
 
-        with open(f"./data/runningStatus.json", 'w', encoding='utf-8') as status_file:
+        with open(f"./config/runningStatus.json", 'w', encoding='utf-8') as status_file:
             status_file.write('0')
         
         print('reset status Success!')

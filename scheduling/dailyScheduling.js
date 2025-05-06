@@ -3,12 +3,10 @@ const fsPromise = fs.promises
 const path = require('path')
 
 const dateFns = require('date-fns')
-
-
 const cron = require('node-cron')
-
-
 const axios = require('axios')
+
+const local_host = 'http://localhost'
 
 let stock_id
 let stock_name
@@ -50,7 +48,7 @@ const run_major_job = async () => {
             
                 console.log(body)
                 
-                let url = '/api/pythonExecAPI'
+                let url = `${local_host}/api/pythonExecAPI`
                 let response = await axios.post(
                     url,
                     body,
@@ -89,7 +87,7 @@ const run_major_job = async () => {
 
 
 const main = async () => {
-    const url = '/api/getDataFromOpenSite'
+    const url = `${local_host}/api/getDataFromOpenSite`
     let response = await axios.post(url)
     
     console.log('dailyScheduling is running')

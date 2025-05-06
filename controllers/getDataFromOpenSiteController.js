@@ -36,8 +36,14 @@ const desideWebsiteCore = async(data) => {
     
     
         const today = date_fns.format(new Date(), 'yyyyMMdd')
+        
+        const rootDirectory = path.join(__dirname, '..', 'data')
         const fileDirectory = path.join(__dirname, '..', 'data', `real_data_${today}`)
-    
+        
+        if (!fs.existsSync(rootDirectory)) {
+            await fsPromise.mkdir(rootDirectory)
+        }
+
         if (!fs.existsSync(fileDirectory)) {
             await fsPromise.mkdir(fileDirectory)
         }

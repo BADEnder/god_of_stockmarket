@@ -221,3 +221,4 @@ def main():
 if __name__ == '__main__':
     print('---------\tACTIVATING main.py\t---------')
     main()
+    print('---------\tDEACTIVATING main.py\t---------')

@@ -14,7 +14,7 @@ const main = async function(stock_id) {
 
     console.log(req_body)
     const getData = await fetch(
-        'http://127.0.0.1/api/getStockMarketData', {
+        '/api/getStockMarketData', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -28,7 +28,7 @@ const main = async function(stock_id) {
     //     stock_id: stock_id
     // }
     const getStockName = await fetch(
-        'http://127.0.0.1/api/getOtherInfoForStockMarket', {
+        '/api/getOtherInfoForStockMarket', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

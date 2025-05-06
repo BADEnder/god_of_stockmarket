@@ -67,7 +67,7 @@ const postDataFromOpenSite = async(req, res) => {
     try {
         const axios_get_res = await axios.get(target_api)
         // console.log(axios_get_res.data)
-        desideWebsiteCore(axios_get_res.data)
+        await desideWebsiteCore(axios_get_res.data)
         res.status(200).json({msg: 'Succsss!'})
 
     } catch (err) {

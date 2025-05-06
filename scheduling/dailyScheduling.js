@@ -50,7 +50,7 @@ const run_major_job = async () => {
             
                 console.log(body)
                 
-                let url = 'http://127.0.0.1/api/pythonExecAPI'
+                let url = '/api/pythonExecAPI'
                 let response = await axios.post(
                     url,
                     body,
@@ -89,7 +89,7 @@ const run_major_job = async () => {
 
 
 const main = async () => {
-    const url = 'http://127.0.0.1/api/getDataFromOpenSite'
+    const url = '/api/getDataFromOpenSite'
     let response = await axios.post(url)
     
     console.log('dailyScheduling is running')

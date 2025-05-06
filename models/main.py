@@ -1,4 +1,11 @@
 
+
+def reset_running_status():
+    with open(f"./config/runningStatus.json", 'w', encoding='utf-8') as status_file:
+        status_file.write('0')
+        print('reset status Success!')
+
+
 def main():
     # Preparing data and Initialize the packages.
     try:
@@ -77,6 +84,7 @@ def main():
         print('data preparing SUCCESS! 73!')
 
     except: 
+        reset_running_status()
         print('data preparing FAIL!')
 
     # Build LSTM Model
@@ -143,6 +151,7 @@ def main():
         print('model trainning SUCCESS! 138 !!')
 
     except: 
+        reset_running_status()
         print('model trainning FAIL!')
 
 
@@ -204,14 +213,11 @@ def main():
             json.dump(result, f, indent=4)
 
         print('prediction success!')
-
-        with open(f"./config/runningStatus.json", 'w', encoding='utf-8') as status_file:
-            status_file.write('0')
-        
-        print('reset status Success!')
+        reset_running_status()
     except: 
+        reset_running_status()
         print('some error happen!')
 
 if __name__ == '__main__':
-    print('HELLO RUNNING main.py')
+    print('---------\tACTIVATING main.py\t---------')
     main()

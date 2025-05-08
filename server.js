@@ -25,6 +25,7 @@ app.use('/', require('./routes/homeRoutes'))
 
 
 // APIs
+app.use('/api/getTopInfo', require('./routes/api/getTopInfoRoute'))
 app.use('/api/getDataFromOpenSite', require('./routes/api/getDataFromOpenSiteRoute'))
 app.use('/api/getStockMarketData', require('./routes/api/getStockMarketDataRoute'))
 app.use('/api/getOtherInfoForStockMarket', require('./routes/api/getOtherInfoForStockMarketRoute'))

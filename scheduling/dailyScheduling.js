@@ -94,15 +94,9 @@ const main = async () => {
     run_major_job()
 }
 
+
+
 main()
-
-// cron.schedule('0 * 01 * * *', async () => {
-//     console.log(topTradingVolumeData.length)
-//     console.log(allData.length)
-
-//     const url = 'http://127.0.0.1/api/getDataFromOpenSite'
-//     let response = await axios.post(url)
-
-//     run_major_job()
-
-// })
+cron.schedule('0 * 01 * * *', async () => {
+    main()
+})

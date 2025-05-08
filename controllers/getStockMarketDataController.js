@@ -86,7 +86,7 @@ const handle_stock_id_to_data = async (stock_id, res) => {
 const postStockMartketData = async(req, res) => {
 
     let stock_id = req.query.stock_id || req.body.stock_id
-    
+    // console.log(stock_id)
 
     handle_stock_id_to_data(stock_id, res)
     .then(data => {

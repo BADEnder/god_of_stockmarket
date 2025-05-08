@@ -12,7 +12,7 @@ let stock_id
 let stock_name
 const run_major_job = async () => {
     const today = dateFns.format(new Date(), 'yyyyMMdd')
-    const topTradingVolumeDataPath = path.join(__dirname, '..', 'data', `real_data_${today}`, 'master.json')
+    const topTradingVolumeDataPath = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
     let topTradingVolumeData = await fsPromise.readFile(topTradingVolumeDataPath)
     topTradingVolumeData = JSON.parse(topTradingVolumeData)
 

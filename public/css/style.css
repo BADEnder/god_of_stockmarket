@@ -64,6 +64,10 @@ footer {
     font-size: 3rem;
 }
 
+.bd {
+    border: 5px double gray;
+}
+
 [v-cloak] {
     display: none
 }

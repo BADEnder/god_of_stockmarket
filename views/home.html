@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+
     <link rel="stylesheet" href="/css/home.css">
     <title>Stock Martket Emperor</title>
 
@@ -20,12 +22,15 @@
 <body>
     <header id="header" class="header container" v-cloak></header>
     
-    <main class="container p-5">
+    <main class="container p-3">
         
-        <div class="m-2 center">Input stock_id and the model is going to predict next 30 days.</div>
-        <div class="m-2 center" style="font-weight: bold;">※ Maximum inputs is 10 each times.</div>
+        <div class="m-2 bd">
+            <div class="m-2 center">Input stock_id and the model is going to predict next 30 days.</div>
+            <div class="m-2 center" style="font-weight: bold;">※ Maximum inputs is 10 each times.</div>
+        </div>
         
-        <div class="m-4">
+        
+        <div class="m-2 ">
             <h3 class="center">Show The Lowest 10 Closing Price. </h3>
             <div class="center m-3">
                 <button class="m-2" onclick="showMillionTradeVolume()">Over Million</button>
@@ -34,9 +39,9 @@
             </div>
 
         </div>
-        <div class="center">
-            <div class="border p-3">
-                <div class="m-2 h3">Seach</div>
+        <div class="m-2 ">
+            <div class="center p-3">
+                <div class="m-2 h3">Seach:</div>
                 <hr>
                 <label class="m-2" for="stock_id" >Stock_id</label>
                 <input class="m-2" type="text" id="stock_id">

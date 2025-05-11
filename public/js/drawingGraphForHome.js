@@ -59,14 +59,15 @@ const main = async function(stock_id) {
             }
     
             let ctx = document.createElement('canvas')
+            
             // ctx.id = `myChart_${idx}`
             // ctx.innerHTML = `<canvas id="myChart_${idx}" style="border: 10px solid black"></canvas>`
-            ctx.innerHTML = `<canvas id="myChart_${idx}" width="600" height="300" aria-label="Hello ARIA World" role="img"></canvas>`
+            ctx.innerHTML = `<canvas id="myChart_${idx}"></canvas>`
             graph_container.appendChild(ctx)
             ctx = ctx.getContext('2d')
             
             // ctx = document.querySelector(`#myChart_${idx}`).getContext('2d')
-        
+
             data = {
                 datasets: [
                     {
@@ -96,7 +97,8 @@ const main = async function(stock_id) {
                     borderWidth: 1
                 },
                 options: {
-                    
+                    responsive: true,
+                    // maintainAspectRatio: false, // Set to false for better scaling on small screens
                     // title: {
                     //     display: true,
                     //     text: 'Custom Chart Title'

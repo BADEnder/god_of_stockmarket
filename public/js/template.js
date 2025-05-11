@@ -24,7 +24,7 @@ const headerTemplate = Vue.createApp({
         
         <div class="logo" >
             <a href="#"> 
-                Stock Martket Emperor
+                Stock Market Emperor
             </a>
         </div>
         <nav class="nav-menu">

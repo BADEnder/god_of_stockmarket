@@ -97,6 +97,6 @@ const main = async () => {
 
 
 main()
-cron.schedule('0 * 01 * * *', async () => {
+cron.schedule('0 1 0 * * *', async () => {
     main()
 })

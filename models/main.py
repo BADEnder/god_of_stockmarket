@@ -50,7 +50,7 @@ def main():
         stock_id, stock_name = set_target_for_model()
 
         print(f'target stock id and stock_name is. {stock_id}, {stock_name}')
-        years = 5
+        years = 10
         # month = 0.5
         time_steps = 5
         no_needed_columns = ['stock_id', 'Trading_money', 'Trading_turnover', 'date', 'open', 'max', 'min', 'spread']

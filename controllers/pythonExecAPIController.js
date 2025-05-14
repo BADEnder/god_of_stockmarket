@@ -59,6 +59,7 @@ const postToRunModel = async (req, res) => {
     
     } catch (err) {
         console.log(err)
+
         return res.sendStatus(500).json( {
             msg: "Server Error."
         })

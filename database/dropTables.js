@@ -4,16 +4,14 @@ const pgConnect = require('./pgConection')
 const all_query = {
     query1: 
     `
-    DROP TABLE IF EXISTS replybook
+    DROP TABLE IF EXISTS models
     `,
     query2: 
     `
-    DROP TABLE IF EXISTS guestbook
+    DROP TABLE IF EXISTS infos
     `,
-    query3: 
-    `
-    DROP TABLE IF EXISTS members
-    `
+
+    
 }
 
 const main = async () => {

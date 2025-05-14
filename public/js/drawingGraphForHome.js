@@ -1,17 +1,16 @@
 const STOCK_ID_ALREADY_GET = new Set()
 
 
-const main = async function(stock_id) {
+const main = async function(stock_id, val_loss_value, growth_rate_value) {
     try {
         let req_body = JSON.stringify({
-            stock_id: stock_id || [2330]
-            // stock_id: [2330, 2337, 6220]
-            // stock_id: [2330, 2337]
-            // stock_id: [2337]
-            
+            stock_id: stock_id || [2330],
+            val_loss_value: Number(val_loss_value) || 10**6,
+            growth_rate_value: Number(growth_rate_value) || (-10)**6,
+
         })
     
-        console.log(req_body)
+        // console.log(req_body)
         const getData = await fetch(
             '/api/getStockMarketData', {
                 method: "POST",
@@ -26,32 +25,28 @@ const main = async function(stock_id) {
         // let seach_name_body = {
         //     stock_id: stock_id
         // }
-        const getStockName = await fetch(
-            '/api/getOtherInfoForStockMarket', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: req_body
-            }
+        // const getStockName = await fetch(
+        //     '/api/getOtherInfoForStockMarket', {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: req_body
+        //     }
     
-        )
-    
-        // console.warn('req_body:', req_body)
-    
-    
+        // )
         
+    
         const final_result = await getData.json()
-        const refer_result = await getStockName.json()
-    
-        // console.warn('final_result: ', final_result)
-        // console.warn('refer_result: ', refer_result)
-    
+        // const refer_result = await getStockName.json()
+        
+        console.error(final_result)
+        // console.error(refer_result)
         let graph_container =  document.querySelector(`#graph-container`)
         for (let idx in final_result) {
             
             let obj = final_result[idx]
-            let ref_obj = refer_result[idx]
+            // let ref_obj = refer_result[idx]
             let data = {
                 real: obj['datasets']['real'],
                 predict: obj['datasets']['predict']
@@ -66,6 +61,7 @@ const main = async function(stock_id) {
             graph_container.appendChild(ctx)
             ctx = ctx.getContext('2d')
             
+
             // ctx = document.querySelector(`#myChart_${idx}`).getContext('2d')
 
             data = {
@@ -89,7 +85,8 @@ const main = async function(stock_id) {
                 ]
             }
         
-        
+            console.warn()
+
             const config = {
                 "type": 'line',
                 "data": data,
@@ -106,7 +103,12 @@ const main = async function(stock_id) {
                     plugins: {
                         title: {
                             display: true,
-                            text: `Stock ID: ${obj['stock_id']}, Stock Name: ${ref_obj['Name']}`,
+                            // text: `Stock ID: ${obj['stock_id']}, Stock Name: ${ref_obj['Name']}`,
+                            text: 
+                            [
+                                `Stock ID: ${obj['stock_id']}, Stock Name: ${obj['stock_name']}\n`,
+                                `( Loss: ${Number(obj['loss_val']).toFixed(2)} Growth Rate: ${Number((obj['day_5_prediction'] / obj['day_0_prediction'])).toFixed(2)} )`
+                            ],
                             font: {
                                 size: 24,
                             }
@@ -151,7 +153,6 @@ const main = async function(stock_id) {
                 }
         
             }
-            // console.log(config)
             new Chart(ctx, config)
         }
     } catch (err) {
@@ -163,39 +164,63 @@ const main = async function(stock_id) {
 
 }
 
+function isNumber(value) {
+    // console.error(typeof(value))
+    // console.error(isNaN(value))
+    value = Number(value)
+    return typeof(value) === 'number' && !isNaN(value);
+  }
 
-
-const submit_stock_id_search = async (event) => {
-    
+const submit_search = async (stock_id) => {
     try {
 
         
         // event.preventDefault()
         let count = 0
-        const stock_id_sets = document.querySelector('#stock_id')
-        let result = []
-        let target_stock_id = stock_id_sets.value.split(',').map( (val) => {
-                return val.trim()
-                })
+        const stock_id_value = stock_id ? stock_id.join(',') : document.querySelector('#stock_id').value
 
-        for (let val of target_stock_id) {
-            if (STOCK_ID_ALREADY_GET.has(val)) {
-                alert(`TARGET ${val} ALREADY EXIST!`)
-            } else {
-                result.push(val)
-                STOCK_ID_ALREADY_GET.add(val)
-                count += 1
-            }
+        let val_loss_value =  Number(document.querySelector('#val_loss').value)
+        let growth_rate_value = Number(document.querySelector('#growth_rate').value)
 
-            if (count > 10) {
-                alert('GIVE TOO MANY STOCK_IDs')
-                break
+        // console.log('stock_id_value', stock_id_value)
+        // console.log('val_loss_value', val_loss_value)
+        // console.log('growth_rate_value', growth_rate_value)
+        
+        if (!isNumber(val_loss_value)) {
+            alert('val_loss got to be number')
+        } else if (!isNumber(growth_rate_value)) {
+            alert('growth_rate_value got to be number')
+        } else {
+            val_loss_value = Number(val_loss_value)
+            growth_rate_value = Number(growth_rate_value)
+            // These are checking stock_id
+            let result = []
+            let target_stock_id = stock_id_value.split(',').map( (val) => {
+                    return val.trim()
+                    })
+
+            for (let val of target_stock_id) {
+                if (val) {
+                    if (STOCK_ID_ALREADY_GET.has(val)) {
+                        alert(`TARGET ${val} ALREADY EXIST!`)
+                    } else {
+                        result.push(val)
+                        STOCK_ID_ALREADY_GET.add(val)
+                        count += 1
+                    }
+        
+                    if (count > 10) {
+                        alert('GIVE TOO MANY STOCK_IDs')
+                        break
+                    }
+                }
+
             }
+            // if (result.length != 0) {
+                main(result, val_loss_value, growth_rate_value)
+            // }
         }
-        stock_id_sets.value = ''
-        if (result.length != 0) {
-            main(result)
-        }
+
     } catch (err) {
         let function_name = 'drawingGraphForHome.js/submit_stock_id_search'
         console.error(`-----\t${function_name} occur some error\t-----`)

@@ -4,7 +4,11 @@ const path = require('path')
 const fs = require('fs')
 const fsPromise = fs.promises
 const dateFns = require('date-fns')
+
 const {checkout_stock_id_type_and_filter_repeat} = require('./usefulFunForStock_id')
+const pgConfig = require('../database/pgConfig')
+const checkSQLInjection = require('../database/checkSQLInjection')
+
 const getStockMartketData = async (req, res) => {
 
     try {
@@ -19,23 +23,51 @@ const getStockMartketData = async (req, res) => {
 }
 
 
-const handle_stock_id_to_data = async (stock_id, res) => {
+const handle_stock_id_to_data = async (req_content, res) => {
     try {
-        let result = []
-        stock_id_sets = checkout_stock_id_type_and_filter_repeat(stock_id)
+        let stock_id = req_content.stock_id
 
-        for (let idx in stock_id_sets) {
-            let filepath = path.join('data', `result_${stock_id_sets[idx]}.json`)
-            if (!fs.existsSync(filepath)) {
-                continue
-            }
-            let read_data = await fsPromise.readFile(filepath, 'utf-8', (err, data) => {})
-            read_data = JSON.parse(read_data)
-            read_data = {
-                ...read_data[0]
-            }
+        req_content.stock_id = checkout_stock_id_type_and_filter_repeat(req_content.stock_id)
+
+        let query = 
+        `
+            SELECT MAIN.*
+
+                FROM models AS MAIN
+
+            JOIN (
+                SELECT stock_id, MAX(data_date) AS data_date
+                FROM models AS MAIN
+                GROUP BY stock_id
+            ) AS REF
+            ON REF.stock_id = MAIN.stock_id
+            AND REF.data_date = MAIN.data_date
+            WHERE 1=1
+        
+        `
+        if (req_content.stock_id.length > 0) {
+            query += `\nMAIN.stock_id IN ${req_content.stock_id.join(',')}`
+        }
+        if (req_content.val_loss_value) {
+            query += `\nAND MAIN.loss_val <= ${req_content.val_loss_value}`
+        }
+        if (req_content.growth_rate_value) {
+            query += `\nAND MAIN.day_5_prediction / MAIN.day_0_prediction >= ${req_content.growth_rate_value}`
+        }
+
+        query += `\nLIMIT 10`
+
+        const client = pgConfig()
+        await client.connect()
+        let pg_result = await client.query(query)
+        const result = pg_result.rows
+
+        await client.end()
+
+        // console.log(result.length)
+        for (let idx in result) {
             
-    
+            let read_data = result[idx]
             // Transfer data to date format
             read_data['x_predict'] = read_data['x_predict'].map((val) => {return dateFns.format(new Date(val / 1000000), 'yyyy-MM-dd') })
             read_data['x_real'] = read_data['x_real'].map((val) => {return dateFns.format(new Date(val / 1000000), 'yyyy-MM-dd') })
@@ -68,7 +100,7 @@ const handle_stock_id_to_data = async (stock_id, res) => {
             delete read_data['x_real']
             delete read_data['y_real']
     
-            result.push(read_data)
+            // result.push(read_data)
     
         }
         return result
@@ -85,10 +117,12 @@ const handle_stock_id_to_data = async (stock_id, res) => {
 } 
 const postStockMartketData = async(req, res) => {
 
-    let stock_id = req.query.stock_id || req.body.stock_id
+    let req_content = req.body || req.query
+    // console.log('req_content:', req_content)
+    
     // console.log(stock_id)
 
-    handle_stock_id_to_data(stock_id, res)
+    handle_stock_id_to_data(req_content, res)
     .then(data => {
         return res.status(200).json(data)
 

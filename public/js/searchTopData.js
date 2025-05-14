@@ -6,7 +6,6 @@ const showMillionTradeVolume = async () => {
     }
 
     const api = `/api/getTopInfo?${Object.keys(req_body)[0]}=${Object.values(req_body)[0]}`
-    console.log(api)
     let getTopData = await fetch(
         api, {
             method: "GET",
@@ -18,12 +17,10 @@ const showMillionTradeVolume = async () => {
     )
 
     getTopData = await getTopData.json(getTopData)
-
-    console.warn(getTopData)
-
     getTopData = changeJsonToStr(getTopData)
 
-    main(getTopData)
+    submit_search(getTopData)
+    document.querySelector("#showMillionTradeVolume").disabled  = true
 
     } catch (err) {
         let function_name = 'searchTopData.js/showMillionTradeVolume'
@@ -40,7 +37,6 @@ const showTenMillionTradeVolume = async () => {
         }
 
         const api = `/api/getTopInfo?${Object.keys(req_body)[0]}=${Object.values(req_body)[0]}`
-        console.log(api)
         let getTopData = await fetch(
             api, {
                 method: "GET",
@@ -52,12 +48,10 @@ const showTenMillionTradeVolume = async () => {
         )
 
         getTopData = await getTopData.json(getTopData)
-
-        console.warn(getTopData)
-
         getTopData = changeJsonToStr(getTopData)
 
-        main(getTopData)
+        submit_search(getTopData)
+        document.querySelector("#showTenMillionTradeVolume").disabled  = true
 
     } catch (err) {
         let function_name = 'searchTopData.js/showTenMillionTradeVolume'
@@ -73,7 +67,6 @@ const showHundredMillionTradeVolume = async () => {
         }
 
         const api = `/api/getTopInfo?${Object.keys(req_body)[0]}=${Object.values(req_body)[0]}`
-        console.log(api)
         let getTopData = await fetch(
             api, {
                 method: "GET",
@@ -85,12 +78,10 @@ const showHundredMillionTradeVolume = async () => {
         )
 
         getTopData = await getTopData.json(getTopData)
-
-        console.warn(getTopData)
-
         getTopData = changeJsonToStr(getTopData)
 
-        main(getTopData)
+        submit_search(getTopData)
+        document.querySelector("#showHundredMillionTradeVolume").disabled  = true
 
     } catch (err) {
         let function_name = 'searchTopData.js/showHundredMillionTradeVolume'

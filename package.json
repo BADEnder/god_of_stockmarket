@@ -11,7 +11,7 @@
         "start": "node server.js & node scheduling/dailyScheduling",
         "scheduling": "node scheduling/dailyScheduling",
         "dev": "nodemon server.js",
-        "init": "node database/main.js && node database/insertFakeData.js"
+        "init": "node database/main.js"
     },
     "author": "Ender",
     "license": "ISC",

@@ -24,8 +24,10 @@ def main():
 
         # Self libaries
         from libs.stockmarket_data import catch_data_from_finmind, create_sequences
+        from libs.postgre_connect import run_change_query, transfer_value_to_sql
+
         # from libs.drawing import 
-        # print('import module parts are ok !!!')
+        # print('Import module parts are ok !!!')
 
         def set_target_for_model ():
 
@@ -48,13 +50,15 @@ def main():
         stock_id, stock_name = set_target_for_model()
 
         print(f'target stock id and stock_name is. {stock_id}, {stock_name}')
-        years = 3
+        years = 5
+        # month = 0.5
         time_steps = 5
         no_needed_columns = ['stock_id', 'Trading_money', 'Trading_turnover', 'date', 'open', 'max', 'min', 'spread']
 
         # print('this is running at here 44!!')
 
         end_date = date.today()
+        # start_date, end_date = (end_date - td(days=month*30)).strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
         start_date, end_date = (end_date - td(days=years*365)).strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
 
         # print('this is running at here 49!!')
@@ -81,11 +85,11 @@ def main():
         y_test = y_train[-time_steps:]
 
 
-        print('data preparing SUCCESS! 73!')
+        print('Data preparing SUCCESS! 73!')
 
     except: 
         reset_running_status()
-        print('data preparing FAIL!')
+        print('Data preparing FAIL!')
 
     # Build LSTM Model
     try:
@@ -116,48 +120,57 @@ def main():
             model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='mse', metrics=['mae'])
             return model
 
+        lowest_val_loss = float('inf')
+        best_model = None
+        best_nodes = None
+        for nodes in (64, 128, 256):
+        # for nodes in (64, 128):
+            model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.5, lr=0.01, predict_days=1)
 
-        model = build_model(lstm_nodes=64, dense_nodes=64, dropout_ratio=0.5, lr=0.01, predict_days=1)
-
-        model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='mse', metrics=['mae'])
-        print(model.summary())
+            model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='mse', metrics=['mae'])
+            print(model.summary())
 
 
-        # save model
-        # checkpoint_path  = 'checkpoints/cp.weights.h5'
-        # checkpoint_dir  = os.path.dirname(checkpoint_path )
-        # # checkpoint = os.path.join(checkpoint_path, "ckpt_{epoch}")
+            # Save model
+            # checkpoint_path  = 'checkpoints/cp.weights.h5'
+            # checkpoint_dir  = os.path.dirname(checkpoint_path )
+            # # checkpoint = os.path.join(checkpoint_path, "ckpt_{epoch}")
 
-        # cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-        #                                                 save_weights_only=True,
-        #                                                 verbose=1)
+            # cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+            #                                                 save_weights_only=True,
+            #                                                 verbose=1)
 
-        # Train model
-        history = model.fit(
-            X_train, y_train, 
-            validation_data=(X_val, y_val), 
-            epochs=20, 
-            batch_size=8,
-            verbose = 0
-            # callbacks = [cp_callback]
-        )
+            # Train model
+            history = model.fit(
+                X_train, y_train, 
+                validation_data=(X_val, y_val), 
+                epochs=20, 
+                batch_size=8,
+                verbose = 0
+                # callbacks = [cp_callback]
+            )
 
-        # model.save(f'models/stock_id={stock_id}__{end_date}__years={years}__time_step={time_steps}__model.keras')
-        
-        
-        # Evaluate
-        test_loss, test_mae = model.evaluate(X_test, y_test)
-        print(f"Test MAE: {test_mae}\n Test loss: ${test_loss}")
-        print('model trainning SUCCESS! 138 !!')
+            # model.save(f'models/stock_id={stock_id}__{end_date}__years={years}__time_step={time_steps}__model.keras')
+            
+            
+            # Evaluate
+            test_loss, test_mae = model.evaluate(X_test, y_test)
+
+            if test_loss < lowest_val_loss:
+                lowest_val_loss = test_loss
+                best_model = model
+                best_nodes = nodes
+                print(f"Test MAE: {test_mae}\nTest loss: {test_loss}")
+                print('Model trainning SUCCESS! 156 !!')
 
     except: 
         reset_running_status()
-        print('model trainning FAIL!')
+        print('Model trainning FAIL!')
 
 
     try:
 
-        y_predict = model.predict(X_train)
+        y_predict = best_model.predict(X_train)
         date_showed_for_real = date_pd[time_steps:].values
         date_showed_for_predict = date_pd[time_steps:].values
 
@@ -169,12 +182,20 @@ def main():
         date_obj = dt.strptime(date_str, '%Y-%m-%d')
         #
         days = 30
+        day_0_prediction = y_train.reshape(-1).tolist()[-1]
+        day_5_prediction = 0
+        day_10_prediction = 0
+        day_15_prediction = 0
+        day_20_prediction = 0
+        day_25_prediction = 0
+        day_30_prediction = 0
 
         statiscal_data = features.values
 
-        for i in range(days):
-            if i != 0:
+        for idx in range(1, days+30):
+            if idx != 1:
                 new_X = new_X[-1, 1:].copy()
+
 
             date_obj = date_obj + td(days = 1)
             date_np = np.datetime64(date_obj)
@@ -186,37 +207,70 @@ def main():
             new_X = np.append(new_X, [new_value], axis=0)
 
             new_X = new_X.reshape(1, time_steps, -1)
-            # print(new_X)
-            # print(new_X.shape)
-            new_predict = model.predict(new_X, verbose=0)
-            y_predict = np.append(y_predict, new_predict, axis=0)
+            new_predict = best_model.predict(new_X, verbose=0)
 
-        # print(date_showed_for_real)
-        # print(date_showed_for_predict)
-        # print(y_predict)
+            if idx % 5 == 0:
+
+                if idx == 5:
+                    day_5_prediction = new_predict.reshape(-1).tolist()[0]
+                if idx == 10:
+                    day_10_prediction = new_predict.reshape(-1).tolist()[0]
+                if idx == 15:
+                    day_15_prediction = new_predict.reshape(-1).tolist()[0]
+                if idx == 20:
+                    day_20_prediction = new_predict.reshape(-1).tolist()[0]
+                if idx == 25:
+                    day_25_prediction = new_predict.reshape(-1).tolist()[0]
+                if idx == 30:
+                    day_30_prediction = new_predict.reshape(-1).tolist()[0]
+            y_predict = np.append(y_predict, new_predict, axis=0)
 
         result = [
             {
                 "stock_id": stock_id,
                 "stock_name": stock_name,
+                "neural_nodes": best_nodes,
+                "loss_val": lowest_val_loss,
+                "day_0_prediction": day_0_prediction,
+                "day_5_prediction": day_5_prediction,
+                "day_10_prediction": day_10_prediction,
+                "day_15_prediction": day_15_prediction,
+                "day_20_prediction": day_20_prediction,
+                "day_25_prediction": day_25_prediction,
+                "day_30_prediction": day_30_prediction,
+                
+                "data_date": end_date,
+                "start_date": start_date,
+                "end_date": end_date,
+
                 "x_real": date_showed_for_real.reshape(-1).tolist(),
                 "x_predict": date_showed_for_predict.reshape(-1).tolist(),
                 "y_real": y_train.reshape(-1).tolist(),
                 "y_predict": y_predict.reshape(-1).tolist()
             }
         ]
+        # print(result)
         # result_y = y_predict.reshape(-1).tolist()
 
-        import json
+        # import json
 
-        with open(f"./data/result_{stock_id}.json", 'w', encoding="utf-8") as f:
-            json.dump(result, f, indent=4)
+        # with open(f"./data/result_{stock_id}.json", 'w', encoding="utf-8") as f:
+        #     json.dump(result, f, indent=4)
 
-        print('prediction success!')
+        
+        def insert_query_format(data):
+            table_name = 'models'
+            query = f"INSERT INTO {table_name} ({', '.join(data[0].keys())}) VALUES({', '.join(data[0].values())})"
+
+            run_change_query(query)
+
+        print('Prediction success!')
+        transfer_value_to_sql(result)
+        insert_query_format(result)
         reset_running_status()
     except: 
         reset_running_status()
-        print('some error happen!')
+        print('Some error happened!')
 
 if __name__ == '__main__':
     print('---------\tACTIVATING main.py\t---------')

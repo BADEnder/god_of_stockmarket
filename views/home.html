@@ -33,20 +33,31 @@
         <div class="m-2 ">
             <h3 class="center">Show The Lowest 10 Closing Price. </h3>
             <div class="center m-3">
-                <button class="m-2" onclick="showMillionTradeVolume()">Over Million</button>
-                <button class="m-2" onclick="showTenMillionTradeVolume()">Over TenMillion</button>
-                <button class="m-2" onclick="showHundredMillionTradeVolume()">Over HundredMillion</button>
+                <button id="showMillionTradeVolume" class="m-2" onclick="showMillionTradeVolume()">Over Million</button>
+                <button id="showTenMillionTradeVolume" class="m-2" onclick="showTenMillionTradeVolume()">Over TenMillion</button>
+                <button id="showHundredMillionTradeVolume" class="m-2" onclick="showHundredMillionTradeVolume()">Over HundredMillion</button>
             </div>
-
         </div>
+
+        
+        <div class="m-2 ">
+            <div class="center m-3">
+
+            </div>
+        </div>
+
+
         <div class="m-2 ">
             <div class="center p-3">
                 <div class="m-2 h3">Seach:</div>
                 <hr>
                 <label class="m-2" for="stock_id" >Stock_id</label>
                 <input class="m-2" type="text" id="stock_id">
-    
-                <button class="m-2" id="submit" class="btn" onclick="submit_stock_id_search(event)">Submit</button>
+                <label class="m-2" for="val_loss">val_loss smaller than</label>
+                <input class="m-2" type="text" id="val_loss" value="1">
+                <label class="m-2" for="growth_rate" >growth_rate</label>
+                <input class="m-2" type="text" id="growth_rate" value="1.03">
+                <button class="m-2" id="submit" class="btn" onclick="submit_search()">Submit</button>
                 <br>
             </div>
         </div>

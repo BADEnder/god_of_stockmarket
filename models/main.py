@@ -50,7 +50,7 @@ def main():
         stock_id, stock_name = set_target_for_model()
 
         print(f'target stock id and stock_name is. {stock_id}, {stock_name}')
-        years = 10
+        years = 3
         # month = 0.5
         time_steps = 5
         no_needed_columns = ['stock_id', 'Trading_money', 'Trading_turnover', 'date', 'open', 'max', 'min', 'spread']
@@ -83,6 +83,8 @@ def main():
 
         X_test = X_train[-time_steps:]
         y_test = y_train[-time_steps:]
+        # X_test = X_train
+        # y_test = y_train
 
 
         print('Data preparing SUCCESS! 73!')
@@ -123,8 +125,8 @@ def main():
         lowest_val_loss = float('inf')
         best_model = None
         best_nodes = None
-        for nodes in (64, 128, 256):
-        # for nodes in (64, 128):
+        # for nodes in (64, 128, 256):
+        for nodes in (64, 128):
             model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.5, lr=0.01, predict_days=1)
 
             model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='mse', metrics=['mae'])
@@ -260,13 +262,18 @@ def main():
         
         def insert_query_format(data):
             table_name = 'models'
-            query = f"INSERT INTO {table_name} ({', '.join(data[0].keys())}) VALUES({', '.join(data[0].values())})"
+            query = f"INSERT INTO public.{table_name} ({', '.join(data[0].keys())}) VALUES({', '.join(data[0].values())})"
 
             run_change_query(query)
 
         print('Prediction success!')
         transfer_value_to_sql(result)
+        print('here is ok')
+        
+
         insert_query_format(result)
+        print('here is ok2')
+
         reset_running_status()
     except: 
         reset_running_status()

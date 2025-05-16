@@ -1,5 +1,3 @@
-// const pgConfig = require('../database/pgConfig')
-// const checkSQLInjection = require('../database/checkSQLInjection')
 const path = require('path')
 const fs = require('fs')
 const fsPromise = fs.promises
@@ -17,7 +15,7 @@ const getStockMartketData = async (req, res) => {
         }
         res.status(200).json(result)
     } catch (err) {
-        console.error(err.name)
+        console.error('err.name: ', err.name)
     }
 
 }
@@ -25,8 +23,6 @@ const getStockMartketData = async (req, res) => {
 
 const handle_stock_id_to_data = async (req_content, res) => {
     try {
-        let stock_id = req_content.stock_id
-
         req_content.stock_id = checkout_stock_id_type_and_filter_repeat(req_content.stock_id)
 
         let query = 
@@ -46,7 +42,8 @@ const handle_stock_id_to_data = async (req_content, res) => {
         
         `
         if (req_content.stock_id.length > 0) {
-            query += `\nMAIN.stock_id IN ${req_content.stock_id.join(',')}`
+            req_content.stock_id = req_content.stock_id.map(val => `'${val}'`)
+            query += `\nAND MAIN.stock_id IN (${req_content.stock_id.join(',')})`
         }
         if (req_content.val_loss_value) {
             query += `\nAND MAIN.loss_val <= ${req_content.val_loss_value}`
@@ -55,6 +52,7 @@ const handle_stock_id_to_data = async (req_content, res) => {
             query += `\nAND MAIN.day_5_prediction / MAIN.day_0_prediction >= ${req_content.growth_rate_value}`
         }
 
+        console.log(query)
         query += `\nLIMIT 10`
 
         const client = pgConfig()
@@ -64,7 +62,6 @@ const handle_stock_id_to_data = async (req_content, res) => {
 
         await client.end()
 
-        // console.log(result.length)
         for (let idx in result) {
             
             let read_data = result[idx]
@@ -105,8 +102,7 @@ const handle_stock_id_to_data = async (req_content, res) => {
         }
         return result
     } catch(err) {
-        console.error(err.name)
-        console.error(err.msg)
+        console.error('err.name: ', err.name)
 
         return res.status(500).json({
             msg: 'SERVER GOT ERROR IN handle_stock_id_to_data!'
@@ -118,9 +114,7 @@ const handle_stock_id_to_data = async (req_content, res) => {
 const postStockMartketData = async(req, res) => {
 
     let req_content = req.body || req.query
-    // console.log('req_content:', req_content)
     
-    // console.log(stock_id)
 
     handle_stock_id_to_data(req_content, res)
     .then(data => {
@@ -128,7 +122,7 @@ const postStockMartketData = async(req, res) => {
 
     })
     .catch(err => {
-        console.error(err.name)
+        console.error('err.name: ', err.name)
 
         return res
     })

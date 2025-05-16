@@ -23,12 +23,10 @@ const postToRunModel = async (req, res) => {
             let stock_id = req.body.stock_id || 'UNKNOWN'
             let stock_name = req.body.stock_name || 'UNKNOWN'
             // const target = path.join(__dirname, '..', 'models/test.py')
-            const target = path.join(__dirname, '..', 'models/main.py')
+            const targetPath = path.join(__dirname, '..', 'models/main.py')
             
-            // const command = `chcp 65001 && python ${target} ${stock_id} ${stock_name}`
-            const command = `python ${target} ${stock_id} ${stock_name}`
+            const command = `python ${targetPath} ${stock_id} ${stock_name}`
             
-            // console.log(command)
 
             if (stock_id != 'UNKNOWN') {
                 exec(command, (error, stdout, stderr) => {
@@ -37,7 +35,6 @@ const postToRunModel = async (req, res) => {
                         return
                       }
                       console.log(`stdout\n\n: ${stdout}`)
-                    //   console.error(`stderr: ${stderr}`)
                 })
                 
                 res.status(200).json({

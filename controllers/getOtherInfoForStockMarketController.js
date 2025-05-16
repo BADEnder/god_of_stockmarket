@@ -1,5 +1,3 @@
-// const pgConfig = require('../database/pgConfig')
-// const checkSQLInjection = require('../database/checkSQLInjection')
 const path = require('path')
 const fs = require('fs')
 const fsPromise = fs.promises
@@ -14,7 +12,8 @@ const getOtherInfoForStockMarket = async (req, res) => {
         }
         res.status(200).json(result)
     } catch (err) {
-        console.error(err.name)
+        console.log('getOtherInfoForStockMarket.getOtherInfoForStockMarket have problem!')
+        console.error('err.name: ', err.name)
     }
 
 }
@@ -22,11 +21,9 @@ const getOtherInfoForStockMarket = async (req, res) => {
 const postOtherInfoForStockMarket = async(req, res) => {
 
     try {
-        // console.log('postOtherInfoForStockMarket running')
         let stock_id_sets = req.query.stock_id || req.body.stock_id
         let result = []
 
-        // console.log('stock_id_sets:\n',stock_id_sets)
         for (let stock_id of stock_id_sets) {
 
             const today = dateFns.format(new Date(), 'yyyyMMdd')
@@ -55,7 +52,8 @@ const postOtherInfoForStockMarket = async(req, res) => {
         res.status(200).json(result)
 
     } catch (err) {
-        console.error(err.name)
+        console.log('getOtherInfoForStockMarket.postOtherInfoForStockMarket have problem!')
+        console.error('err.name: ', err.name)
     }
 
 }

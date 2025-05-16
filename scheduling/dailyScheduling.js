@@ -6,19 +6,19 @@ const dateFns = require('date-fns')
 const cron = require('node-cron')
 const axios = require('axios')
 
+const {exec, ChildProcess} = require('child_process')
+
 const local_host = 'http://localhost'
 
 let stock_id
 let stock_name
-const run_major_job = async () => {
+const runMajorSchedulingJob = async () => {
     const today = dateFns.format(new Date(), 'yyyyMMdd')
     const topTradingVolumeDataPath = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
-    let topTradingVolumeData = await fsPromise.readFile(topTradingVolumeDataPath)
-    topTradingVolumeData = JSON.parse(topTradingVolumeData)
+    let targetStockIdArray = await fsPromise.readFile(topTradingVolumeDataPath)
+    targetStockIdArray = JSON.parse(targetStockIdArray)
 
-    console.log(topTradingVolumeData.length)
-
-    // const allData = require(`../data/real_data_${today}/all_data.json`)
+    console.log(`---------Total Target Length: ${targetStockIdArray.length}---------`)
 
     try {
     
@@ -26,48 +26,42 @@ const run_major_job = async () => {
             const runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.json')
 
             let runningStatusNow = await fsPromise.readFile(runningStatusPath)
-            console.log('here you not go, status: 1.')
+            console.log('STATUS: 1, RUNNING!')
 
             if (runningStatusNow == 0) {
 
-                console.log('here you go, status: 0.')
-                let row = topTradingVolumeData.shift()
+                let row = targetStockIdArray.shift()
                 stock_id = row['Code']
                 stock_name = row['Name']
-        
+
+                console.log('STATUS: 0, NOT RUNNING!')
+                console.log('---------------')
+                console.log('Rest Target Length', targetStockIdArray.length)
                 console.log('stock_id', stock_id)
                 console.log('stock_name', stock_name)
-                console.log('topTradingVolumeData.length', topTradingVolumeData.length)
-        
-                let body = {
-                    stock_id: stock_id,
-                    stock_name: stock_name,
-                    username: 'Ender',
-                    password: '789'
-                }
-            
-                console.log(body)
+                console.log('---------------')
                 
-                let url = `${local_host}/api/pythonExecAPI`
-                let response = await axios.post(
-                    url,
-                    body,
-                    {
-                        'headers': {
-                            'Content-Type': 'application/json',
-                        }
-                    },
+                const targetPath = path.join(__dirname, '..', 'models/main.py')
+                let command = `python ${targetPath} ${stock_id} ${stock_name}`
+
+                console.log(command)
+                if (stock_id != 'UNKNOWN') {
+                    exec(command, (error, stdout, stderr) => {
+                        if (error) {
+                            console.error(`Execution Got Error:\n ${error}`)
+                            return
+                          }
+                          console.log(`Execution Stdout:\n ${stdout}`)
+                    })
+                    
+
+                } 
         
-                )
-        
-                // console.log('here you go!!')
-                // console.log(runningStatusPath)
                 await fsPromise.writeFile(runningStatusPath, '1', 'utf-8')
-            
-                console.log(response.data)
+        
             }
 
-            if (topTradingVolumeData.length == 0) {
+            if (targetStockIdArray.length == 0) {
                 clearInterval(checkJob)
             }
 
@@ -75,28 +69,24 @@ const run_major_job = async () => {
 
         
     } catch (err) {
-        if (err.name == 'AxiosError') {
-            console.error(err.response.status)
-            console.error(err.response.data)
-        } else {
-            console.error(err.name)
-        }
+
+            console.error('err.name: ', err.name)
     }
 
 }
 
 
-const main = async () => {
+const mainFunction = async () => {
     const url = `${local_host}/api/getDataFromOpenSite`
     let response = await axios.post(url)
     
     console.log('dailyScheduling is running')
-    run_major_job()
+    runMajorSchedulingJob()
 }
 
 
 
-main()
+mainFunction()
 cron.schedule('0 1 0 * * *', async () => {
-    main()
+    mainFunction()
 })

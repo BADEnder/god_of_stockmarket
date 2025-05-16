@@ -10,8 +10,7 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
 
         })
     
-        // console.log(req_body)
-        const getData = await fetch(
+        const getStockMarketData = await fetch(
             '/api/getStockMarketData', {
                 method: "POST",
                 headers: {
@@ -22,30 +21,15 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
     
         )
     
-        // let seach_name_body = {
-        //     stock_id: stock_id
-        // }
-        // const getStockName = await fetch(
-        //     '/api/getOtherInfoForStockMarket', {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: req_body
-        //     }
-    
-        // )
-        
-    
-        const final_result = await getData.json()
+        const stockMarketData = await getStockMarketData.json()
+        stockMarketData.map((obj) => STOCK_ID_ALREADY_GET.add(obj['stock_id']))
+        console.log(STOCK_ID_ALREADY_GET)
         // const refer_result = await getStockName.json()
         
-        console.error(final_result)
-        // console.error(refer_result)
         let graph_container =  document.querySelector(`#graph-container`)
-        for (let idx in final_result) {
+        for (let idx in stockMarketData) {
             
-            let obj = final_result[idx]
+            let obj = stockMarketData[idx]
             // let ref_obj = refer_result[idx]
             let data = {
                 real: obj['datasets']['real'],
@@ -85,7 +69,6 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
                 ]
             }
         
-            console.warn()
 
             const config = {
                 "type": 'line',
@@ -165,8 +148,6 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
 }
 
 function isNumber(value) {
-    // console.error(typeof(value))
-    // console.error(isNaN(value))
     value = Number(value)
     return typeof(value) === 'number' && !isNaN(value);
   }
@@ -182,10 +163,7 @@ const submit_search = async (stock_id) => {
         let val_loss_value =  Number(document.querySelector('#val_loss').value)
         let growth_rate_value = Number(document.querySelector('#growth_rate').value)
 
-        // console.log('stock_id_value', stock_id_value)
-        // console.log('val_loss_value', val_loss_value)
-        // console.log('growth_rate_value', growth_rate_value)
-        
+        let messageForWindowAlert = []
         if (!isNumber(val_loss_value)) {
             alert('val_loss got to be number')
         } else if (!isNumber(growth_rate_value)) {
@@ -198,11 +176,12 @@ const submit_search = async (stock_id) => {
             let target_stock_id = stock_id_value.split(',').map( (val) => {
                     return val.trim()
                     })
-
+            
+            
             for (let val of target_stock_id) {
                 if (val) {
                     if (STOCK_ID_ALREADY_GET.has(val)) {
-                        alert(`TARGET ${val} ALREADY EXIST!`)
+                        messageForWindowAlert.push(val)
                     } else {
                         result.push(val)
                         STOCK_ID_ALREADY_GET.add(val)
@@ -214,6 +193,10 @@ const submit_search = async (stock_id) => {
                         break
                     }
                 }
+
+            }
+            if (messageForWindowAlert != '') {
+                alert((`TARGET ${messageForWindowAlert.join(', ')} ALREADY EXIST!`))
 
             }
             // if (result.length != 0) {

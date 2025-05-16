@@ -268,11 +268,9 @@ def main():
 
         print('Prediction success!')
         transfer_value_to_sql(result)
-        print('here is ok')
         
 
         insert_query_format(result)
-        print('here is ok2')
 
         reset_running_status()
     except: 

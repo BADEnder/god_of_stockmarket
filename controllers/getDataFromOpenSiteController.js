@@ -29,8 +29,8 @@ const desideWebsiteCore = async(data) => {
         const result = data.filter((val) => {
             return Number(val.TradeVolume) > 10**7 && Number(val.ClosingPrice < 100**1)
         })
-        console.log('data.length', data.length)
-        console.log('result.length', result.length)
+        // console.log('data.length', data.length)
+        // console.log('result.length', result.length)
 
         // console.log('result:\n', result)
     

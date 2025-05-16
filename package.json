@@ -8,7 +8,7 @@
     },
     "scripts": {
         "test": "node test/main.js",
-        "start": "node server.js & node scheduling/dailyScheduling",
+        "start": "node server.js",
         "scheduling": "node scheduling/dailyScheduling",
         "dev": "nodemon server.js",
         "init": "node database/main.js"

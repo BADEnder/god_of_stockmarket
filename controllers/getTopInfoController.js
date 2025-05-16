@@ -8,11 +8,8 @@ const getTopInfo = (req, res) => {
     
         let query = req.query || req.body
         
-        // console.log('data.length: \n', data.length)
-        // console.log('data[0]: \n', data[0])
         result = [...data]
         
-        console.log(query)
         result = result.filter(val => {return val['ClosingPrice']})
     
         if (query.enoughMillionTradeVolume) {
@@ -34,12 +31,11 @@ const getTopInfo = (req, res) => {
     
         result = result.slice(0, 10)
     
-        console.log('result.length: \n', result.length)
-        console.log('result[0]: \n', result[0])
     
         return res.status(200).json(result)
-    } catch (error) {
-        console.error(error.name)
+    } catch (err) {
+        console.log('-----getTopInfoController.getTopInfo got error!! -----')
+        console.error('err.name:', err.name)
         res.status(500).json({msg: 'Internal Server Error'})
     }
 

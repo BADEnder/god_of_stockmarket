@@ -1,5 +1,4 @@
 const checkout_stock_id_type_and_filter_repeat = (stock_id_sets) => {
-    // console.log('running checkout_stock_id_type_and_filter_repeat')
     if (typeof(stock_id_sets) == 'string' ||
         typeof(stock_id_sets) == 'number' 
         ) {
@@ -11,14 +10,13 @@ const checkout_stock_id_type_and_filter_repeat = (stock_id_sets) => {
     let non_repeat_stock_sets = []
     let check_repaet_data_set = new Set()
     
-    for (stock_id of stock_id_sets) {
+    for (let stock_id of stock_id_sets) {
         if (!check_repaet_data_set.has(stock_id)) {
             non_repeat_stock_sets.push(stock_id)
             check_repaet_data_set.add(stock_id)
         }
     }
     
-    // console.log('checkout_stock_id_type_and_filter_repeat success~~~!')
     return non_repeat_stock_sets
 }
 

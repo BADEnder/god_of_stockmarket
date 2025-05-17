@@ -53,6 +53,7 @@ const handle_stock_id_to_data = async (req_content, res) => {
         }
 
         console.log(query)
+        query += `\nORDER BY MAIN.day_5_prediction / MAIN.day_0_prediction DESC, MAIN.loss_val ASC`
         query += `\nLIMIT 10`
 
         const client = pgConfig()

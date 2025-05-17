@@ -29,8 +29,10 @@ const all_query = {
     CREATE TABLE IF NOT EXISTS models (
         stock_id character varying(20),
         stock_name character varying(50),
+        loss_val decimal(20, 6),
         neural_nodes bigint,
-        loss_val numeric,
+        learning_rate decimal(20, 6),
+        dropout_ratio decimal(20, 6),
         
         day_0_prediction decimal(20, 6),
         day_5_prediction decimal(20, 6),

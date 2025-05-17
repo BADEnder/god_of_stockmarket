@@ -1,3 +1,5 @@
+const majorRunningIndex = false
+
 const fs = require('fs')
 const fsPromise = fs.promises
 const path = require('path')
@@ -63,6 +65,7 @@ const runMajorSchedulingJob = async () => {
 
             if (targetStockIdArray.length == 0) {
                 clearInterval(checkJob)
+                majorRunningIndex = false
             }
 
         }, 10*1000)
@@ -87,6 +90,9 @@ const mainFunction = async () => {
 
 
 mainFunction()
-cron.schedule('0 1 0 * * *', async () => {
-    mainFunction()
+cron.schedule('0 1 0,6,12,18 * * *', async () => {
+    if (!majorRunningIndex) {
+        majorRunningIndex = true
+        mainFunction()
+    }
 })

@@ -20,14 +20,13 @@ def main():
 
         import tensorflow as tf
         # from sklearn.preprocessing import MinMaxScaler
-        # from sklearn.model_selection import train_test_split
 
         # Self libaries
         from libs.stockmarket_data import catch_data_from_finmind, create_sequences
         from libs.postgre_connect import run_change_query, transfer_value_to_sql
 
         # from libs.drawing import 
-        # print('Import module parts are ok !!!')
+        print('Import module parts are ok !!!')
 
         def set_target_for_model ():
 
@@ -51,21 +50,12 @@ def main():
 
         print(f'target stock id and stock_name is. {stock_id}, {stock_name}')
         years = 3
-        # month = 0.5
         time_steps = 5
         no_needed_columns = ['stock_id', 'Trading_money', 'Trading_turnover', 'date', 'open', 'max', 'min', 'spread']
-
-        # print('this is running at here 44!!')
-
         end_date = date.today()
-        # start_date, end_date = (end_date - td(days=month*30)).strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
         start_date, end_date = (end_date - td(days=years*365)).strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
-
-        # print('this is running at here 49!!')
-
         features, target, date_pd = catch_data_from_finmind(stock_id, start_date, end_date, no_needed_columns, 'close')
 
-        # print('this is running at here 53!!')
         
         # Normalize data
         # scaler = MinMaxScaler()
@@ -125,45 +115,52 @@ def main():
         lowest_val_loss = float('inf')
         best_model = None
         best_nodes = None
-        # for nodes in (64, 128, 256):
-        for nodes in (64, 128):
-            model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.5, lr=0.01, predict_days=1)
+        best_drop_ratio = None
+        best_lr = None
+        for nodes in (64, 128, 256):
+            for drop_ratio in (0, 0.2, 0.5):
+                for lr in (0.001, 0.01):
 
-            model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='mse', metrics=['mae'])
-            print(model.summary())
+                    model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.5, lr=0.01, predict_days=1)
+
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='mse', metrics=['mae'])
+                    print(model.summary())
 
 
-            # Save model
-            # checkpoint_path  = 'checkpoints/cp.weights.h5'
-            # checkpoint_dir  = os.path.dirname(checkpoint_path )
-            # # checkpoint = os.path.join(checkpoint_path, "ckpt_{epoch}")
+                    # Save model
+                    # checkpoint_path  = 'checkpoints/cp.weights.h5'
+                    # checkpoint_dir  = os.path.dirname(checkpoint_path )
+                    # # checkpoint = os.path.join(checkpoint_path, "ckpt_{epoch}")
 
-            # cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-            #                                                 save_weights_only=True,
-            #                                                 verbose=1)
+                    # cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                    #                                                 save_weights_only=True,
+                    #                                                 verbose=1)
 
-            # Train model
-            history = model.fit(
-                X_train, y_train, 
-                validation_data=(X_val, y_val), 
-                epochs=20, 
-                batch_size=8,
-                verbose = 0
-                # callbacks = [cp_callback]
-            )
+                    # Train model
+                    model.fit(
+                        X_train, y_train, 
+                        validation_data=(X_val, y_val), 
+                        epochs=20, 
+                        batch_size=8,
+                        verbose = 0
+                        # callbacks = [cp_callback]
+                    )
 
-            # model.save(f'models/stock_id={stock_id}__{end_date}__years={years}__time_step={time_steps}__model.keras')
-            
-            
-            # Evaluate
-            test_loss, test_mae = model.evaluate(X_test, y_test)
+                    # model.save(f'models/stock_id={stock_id}__{end_date}__years={years}__time_step={time_steps}__model.keras')
+                    
+                    
+                    # Evaluate
+                    test_loss, test_mae = model.evaluate(X_test, y_test)
+                    print(f"Test loss: {test_loss}")
+                    print(f"Test MAE: {test_mae}")
+                    if test_loss < lowest_val_loss:
+                        lowest_val_loss = test_loss
+                        best_model = model
+                        best_nodes, best_drop_ratio, best_lr = nodes, drop_ratio, lr
 
-            if test_loss < lowest_val_loss:
-                lowest_val_loss = test_loss
-                best_model = model
-                best_nodes = nodes
-                print(f"Test MAE: {test_mae}\nTest loss: {test_loss}")
-                print('Model trainning SUCCESS! 156 !!')
+
+
+        print('Model trainning SUCCESS! 156 !!')
 
     except: 
         reset_running_status()
@@ -231,8 +228,12 @@ def main():
             {
                 "stock_id": stock_id,
                 "stock_name": stock_name,
-                "neural_nodes": best_nodes,
                 "loss_val": lowest_val_loss,
+                "dropout_ratio": best_drop_ratio,
+                "learning_rate": best_lr,
+                "neural_nodes": best_nodes,
+                "neural_nodes": best_nodes,
+                "neural_nodes": best_nodes,
                 "day_0_prediction": day_0_prediction,
                 "day_5_prediction": day_5_prediction,
                 "day_10_prediction": day_10_prediction,

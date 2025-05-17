@@ -1,7 +1,7 @@
 
 
 def reset_running_status():
-    with open(f"./config/runningStatus.json", 'w', encoding='utf-8') as status_file:
+    with open(f"./config/runningStatus.txt", 'w', encoding='utf-8') as status_file:
         status_file.write('0')
         print('reset status Success!')
 
@@ -71,8 +71,8 @@ def main():
         X_train, X_val = X, X[len(X)*4//5:]
         y_train, y_val = y, y[len(y)*4//5:]
 
-        X_test = X_train[-time_steps:]
-        y_test = y_train[-time_steps:]
+        X_test = X_train[-4*time_steps:]
+        y_test = y_train[-4*time_steps:]
         # X_test = X_train
         # y_test = y_train
 
@@ -117,8 +117,9 @@ def main():
         best_nodes = None
         best_drop_ratio = None
         best_lr = None
-        for nodes in (64, 128, 256):
-            for drop_ratio in (0, 0.2, 0.5):
+        # for nodes in (64, 128, 256):
+        for nodes in (64, 128):
+            for drop_ratio in (0.2, 0.5):
                 for lr in (0.001, 0.01):
 
                     model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.5, lr=0.01, predict_days=1)

@@ -25,12 +25,13 @@ const runMajorSchedulingJob = async () => {
     try {
     
         const checkJob = setInterval(async () => {
-            const runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.json')
+            const runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.txt')
 
-            let runningStatusNow = await fsPromise.readFile(runningStatusPath)
+            let runningStatusNow = await fsPromise.readFile(runningStatusPath, 'utf-8')
             console.log('STATUS: 1, RUNNING!')
-
-            if (runningStatusNow == 0) {
+            
+            // console.log(runningStatusNow.trim())
+            if (runningStatusNow.trim() != 1) {
 
                 let row = targetStockIdArray.shift()
                 stock_id = row['Code']
@@ -81,7 +82,7 @@ const runMajorSchedulingJob = async () => {
 
 const mainFunction = async () => {
     const url = `${local_host}/api/getDataFromOpenSite`
-    let response = await axios.post(url)
+    await axios.post(url)
     
     console.log('dailyScheduling is running')
     runMajorSchedulingJob()

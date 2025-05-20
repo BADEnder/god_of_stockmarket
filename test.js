@@ -66,6 +66,14 @@
 // console.log(typeof(typeof(stock_id)))
 
 
+const dateFns = require('date-fns')
+const startTime = new Date()
 
-console.log(2**4)
-console.log(2^4)
+console.log(dateFns.format(startTime, 'yyyy-MM-dd HH:mm:ss'))
+setTimeout(() => {
+    const endTime = new Date()
+
+    console.log(endTime - startTime)
+}, 5000)
+
+

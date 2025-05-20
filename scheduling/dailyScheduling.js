@@ -1,4 +1,4 @@
-const majorRunningIndex = false
+let majorRunningIndex = false
 
 const fs = require('fs')
 const fsPromise = fs.promises
@@ -15,8 +15,10 @@ const local_host = 'http://localhost'
 let stock_id
 let stock_name
 const runMajorSchedulingJob = async () => {
-    const today = dateFns.format(new Date(), 'yyyyMMdd')
-    const topTradingVolumeDataPath = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
+    let startTime = new Date()
+    let today = dateFns.format(startTime, 'yyyyMMdd')
+    let topTradingVolumeDataPath = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
+
     let targetStockIdArray = await fsPromise.readFile(topTradingVolumeDataPath)
     targetStockIdArray = JSON.parse(targetStockIdArray)
 
@@ -24,8 +26,8 @@ const runMajorSchedulingJob = async () => {
 
     try {
     
-        const checkJob = setInterval(async () => {
-            const runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.txt')
+        let checkJob = setInterval(async () => {
+            let runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.txt')
 
             let runningStatusNow = await fsPromise.readFile(runningStatusPath, 'utf-8')
             console.log('STATUS: 1, RUNNING!')
@@ -44,7 +46,7 @@ const runMajorSchedulingJob = async () => {
                 console.log('stock_name', stock_name)
                 console.log('---------------')
                 
-                const targetPath = path.join(__dirname, '..', 'models/main.py')
+                let targetPath = path.join(__dirname, '..', 'models/main.py')
                 let command = `python ${targetPath} ${stock_id} ${stock_name}`
 
                 console.log(command)
@@ -66,6 +68,12 @@ const runMajorSchedulingJob = async () => {
 
             if (targetStockIdArray.length == 0) {
                 clearInterval(checkJob)
+                let endTime = new Date()
+                console.log('---------------------------------------------')
+                console.log(`Start Time: ${dateFns.format(startTime, 'yyyy-MM-dd HH:mm:ss')}`)
+                console.log(`End Time: ${dateFns.format(endTime, 'yyyy-MM-dd HH:mm:ss')}`)
+                console.log(`Total Running Time: ${(endTime - startTime) / (1000 * 60)} (mins)`)
+                console.log('---------------------------------------------')
                 majorRunningIndex = false
             }
 

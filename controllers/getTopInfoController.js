@@ -10,7 +10,7 @@ const getTopInfo = (req, res) => {
         
         result = [...data]
         
-        result = result.filter(val => {return val['ClosingPrice']})
+        result = result.filter(val => {return val['ClosingPrice'] && val['ClosingPrice'] <= 100})
     
         if (query.enoughMillionTradeVolume) {
             result = result.filter(val => {return val['TradeVolume'] >= 10 ** 6})
@@ -25,8 +25,12 @@ const getTopInfo = (req, res) => {
         } 
     
     
+        // result.sort((a, b) => {
+        //     return a['ClosingPrice'] - b['ClosingPrice']
+        // })
+    
         result.sort((a, b) => {
-            return a['ClosingPrice'] - b['ClosingPrice']
+            return b['TradeVolume'] - a['TradeVolume']
         })
     
         result = result.slice(0, 10)

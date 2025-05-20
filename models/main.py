@@ -117,14 +117,16 @@ def main():
         best_nodes = None
         best_drop_ratio = None
         best_lr = None
-        # for nodes in (64, 128, 256):
+        # for nodes in (64, 128):
+        #     for drop_ratio in (0.2, 0.5):
+        #         for lr in (0.001, 0.01):
         for nodes in (64, 128):
-            for drop_ratio in (0.2, 0.5):
-                for lr in (0.001, 0.01):
+            for drop_ratio in (0.5):
+                for lr in (0.001):
 
-                    model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.5, lr=0.01, predict_days=1)
+                    model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=drop_ratio, lr=lr, predict_days=1)
 
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='mse', metrics=['mae'])
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='mse', metrics=['mae'])
                     print(model.summary())
 
 

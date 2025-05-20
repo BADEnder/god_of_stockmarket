@@ -1,6 +1,5 @@
 const STOCK_ID_ALREADY_GET = new Set()
 
-
 const main = async function(stock_id, val_loss_value, growth_rate_value) {
     try {
         let req_body = JSON.stringify({
@@ -69,6 +68,7 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
                 ]
             }
         
+            // console.log(typeof obj['data_date'])
 
             const config = {
                 "type": 'line',
@@ -90,7 +90,7 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
                             text: 
                             [
                                 `Stock ID: ${obj['stock_id']}, Stock Name: ${obj['stock_name']}\n`,
-                                `( Loss: ${Number(obj['loss_val']).toFixed(2)} Growth Rate: ${Number((obj['day_5_prediction'] / obj['day_0_prediction'])).toFixed(2)} )`
+                                `( Loss: ${Number(obj['loss_val']).toFixed(2)}, Growth Rate: ${Number((obj['day_5_prediction'] / obj['day_0_prediction'])).toFixed(2)}, Data Date: ${obj['data_date'].substring(0, 10)})`
                             ],
                             font: {
                                 size: 24,

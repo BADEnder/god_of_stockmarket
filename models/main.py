@@ -85,7 +85,7 @@ def main():
 
     # Build LSTM Model
     try:
-        def build_model (lstm_nodes=256, dense_nodes=256, dropout_ratio=0.5, lr=0.001, predict_days=1):
+        def build_model (lstm_nodes=256, dense_nodes=256, dropout_ratio=0.5, lr=0.001):
 
             model = tf.keras.Sequential()
 
@@ -105,26 +105,28 @@ def main():
 
             # 3. Final layer
             model.add(tf.keras.layers.Dense(dense_nodes, activation='relu'))
-            model.add(tf.keras.layers.Dense(predict_days))
+            model.add(tf.keras.layers.Dense(1))
 
 
 
-            model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='mse', metrics=['mae'])
+            # model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='mse', metrics=['mae'])
             return model
 
         lowest_val_loss = float('inf')
         best_model = None
         best_nodes = None
-        best_drop_ratio = None
+        best_dropout_ratio = None
         best_lr = None
         # for nodes in (64, 128):
-        #     for drop_ratio in (0.2, 0.5):
+        #     for dropout_ratio in (0.2, 0.5):
         #         for lr in (0.001, 0.01):
-        for nodes in (64, 128):
-            for drop_ratio in (0.5):
-                for lr in (0.001):
-
-                    model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=drop_ratio, lr=lr, predict_days=1)
+        for nodes in (64,):
+            for dropout_ratio in (0.5,):
+                for lr in (0.001,):
+                    
+                    print(nodes, dropout_ratio, lr)
+                    # model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=0.001, lr=0.1, predict_days=1)
+                    model = build_model(lstm_nodes=nodes, dense_nodes=nodes, dropout_ratio=dropout_ratio, lr=lr)
 
                     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='mse', metrics=['mae'])
                     print(model.summary())
@@ -159,7 +161,7 @@ def main():
                     if test_loss < lowest_val_loss:
                         lowest_val_loss = test_loss
                         best_model = model
-                        best_nodes, best_drop_ratio, best_lr = nodes, drop_ratio, lr
+                        best_nodes, best_dropout_ratio, best_lr = nodes, dropout_ratio, lr
 
 
 
@@ -232,10 +234,8 @@ def main():
                 "stock_id": stock_id,
                 "stock_name": stock_name,
                 "loss_val": lowest_val_loss,
-                "dropout_ratio": best_drop_ratio,
+                "dropout_ratio": best_dropout_ratio,
                 "learning_rate": best_lr,
-                "neural_nodes": best_nodes,
-                "neural_nodes": best_nodes,
                 "neural_nodes": best_nodes,
                 "day_0_prediction": day_0_prediction,
                 "day_5_prediction": day_5_prediction,

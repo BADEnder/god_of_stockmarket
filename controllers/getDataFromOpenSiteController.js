@@ -26,12 +26,11 @@ const getDataFromOpenSite = async (req, res) => {
 const desideWebsiteCore = async(data) => {
     try {
 
-        const result = data.filter((val) => {
-            return Number(val.TradeVolume) > 10**7 && Number(val.ClosingPrice < 100**1)
+        let result = data.filter((val) => {
+            return Number(val.TradeVolume) >= 10**5 && Number(val.ClosingPrice <= 100**1) && String(Number(val.Code)) == val.Code
         })
         // console.log('data.length', data.length)
-        // console.log('result.length', result.length)
-
+        console.log('result.length', result.length)
         // console.log('result:\n', result)
     
     

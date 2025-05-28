@@ -19,7 +19,7 @@ const showMillionTradeVolume = async () => {
     getTopData = await getTopData.json(getTopData)
     getTopData = changeJsonToStr(getTopData)
 
-    submit_search(getTopData)
+    submit_search(getTopData, 10**6, 0.01)
     document.querySelector("#showMillionTradeVolume").disabled  = true
 
     } catch (err) {
@@ -50,7 +50,7 @@ const showTenMillionTradeVolume = async () => {
         getTopData = await getTopData.json(getTopData)
         getTopData = changeJsonToStr(getTopData)
 
-        submit_search(getTopData)
+        submit_search(getTopData, 10**6, 0.01)
         document.querySelector("#showTenMillionTradeVolume").disabled  = true
 
     } catch (err) {
@@ -80,7 +80,7 @@ const showHundredMillionTradeVolume = async () => {
         getTopData = await getTopData.json(getTopData)
         getTopData = changeJsonToStr(getTopData)
 
-        submit_search(getTopData)
+        submit_search(getTopData, 10**6, 0.01)
         document.querySelector("#showHundredMillionTradeVolume").disabled  = true
 
     } catch (err) {

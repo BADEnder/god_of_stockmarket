@@ -30,7 +30,7 @@ const desideWebsiteCore = async(data) => {
             return Number(val.TradeVolume) >= 10**5 && Number(val.ClosingPrice <= 100**1) && String(Number(val.Code)) == val.Code
         })
         // console.log('data.length', data.length)
-        console.log('result.length', result.length)
+        // console.log('result.length', result.length)
         // console.log('result:\n', result)
     
     

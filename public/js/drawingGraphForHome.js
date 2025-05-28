@@ -152,7 +152,7 @@ function isNumber(value) {
     return typeof(value) === 'number' && !isNaN(value);
   }
 
-const submit_search = async (stock_id) => {
+const submit_search = async (stock_id, val_loss, growth_rate) => {
     try {
 
         
@@ -160,9 +160,11 @@ const submit_search = async (stock_id) => {
         let count = 0
         const stock_id_value = stock_id ? stock_id.join(',') : document.querySelector('#stock_id').value
 
-        let val_loss_value =  Number(document.querySelector('#val_loss').value)
-        let growth_rate_value = Number(document.querySelector('#growth_rate').value)
+        let val_loss_value =  val_loss ? Number(val_loss) : Number(document.querySelector('#val_loss').value)
+        let growth_rate_value = growth_rate ? Number(growth_rate) : Number(document.querySelector('#growth_rate').value)
 
+        console.log(val_loss_value)
+        console.log(growth_rate_value)
         let messageForWindowAlert = []
         if (!isNumber(val_loss_value)) {
             alert('val_loss got to be number')

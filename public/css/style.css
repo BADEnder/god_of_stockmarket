@@ -33,7 +33,7 @@ input, label, button{
     width: var(--MSG-WIDTH);
     display: none;
     justify-content: center;
-    align-items: center;
+    align-items: cente r;
     top: 5%;
     left: calc((100% - var(--MSG-WIDTH)) / 2);
 }

@@ -181,7 +181,7 @@ const runAnimation = async () => {
             count = 0
             dotMsg = ''
         }
-    }, 500)
+    }, 1000)
 
 
 }

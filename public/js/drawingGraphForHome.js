@@ -1,8 +1,10 @@
 const STOCK_ID_ALREADY_GET = new Set()
+const animationTaskList = {}
 let msgGlobal = ''
+
 const main = async (stock_id, val_loss_value, growth_rate_value) => {
     try {
-        msgGlobal = 'RUNNING!'
+        msgGlobal = 'Search Ruuning'
         runAnimation()
         let req_body = JSON.stringify({
             stock_id: stock_id || [2330],
@@ -141,7 +143,7 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
             new Chart(ctx, config)
         }
 
-        msgGlobal = 'Success~!'
+        msgGlobal = 'Search Success.'
         killAnimation('anime1')
 
 
@@ -160,17 +162,16 @@ const isNumber = (value) => {
     return typeof(value) === 'number' && !isNaN(value)
 }
 
-const animationTaskList = {}
-let animationCount = 0
 const runAnimation = async () => {
 
     const msgBlock = document.querySelector('.msg-fun-but')
     msgBlock.innerText = msgGlobal
     msgBlock.style.display = 'flex'
 
+    console.log(animationTaskList)
     let dotMsg = ''
     let count = 0
-    animationTaskList['task'] = setInterval(() => {
+    animationTaskList['anime1'] = setInterval(() => {
 
         count +=1 
         dotMsg += '.'
@@ -181,6 +182,7 @@ const runAnimation = async () => {
             count = 0
             dotMsg = ''
         }
+        console.log('sec', new Date().getSeconds())
     }, 1000)
 
 
@@ -193,9 +195,11 @@ const killAnimation = async (task) => {
     const subTask = setInterval(() => {
         opacity -= 0.04
         msgBlock.style.opacity = opacity
-        console.log(opacity)
+        // console.log(opacity)
         if (opacity < 0) {
+            console.log('task:', task)
             clearInterval(animationTaskList[task])
+            delete animationTaskList[task]
             clearInterval(subTask)
             msgBlock.style.display = 'none'
 

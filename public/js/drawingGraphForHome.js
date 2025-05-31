@@ -1,7 +1,9 @@
 const STOCK_ID_ALREADY_GET = new Set()
-
-const main = async function(stock_id, val_loss_value, growth_rate_value) {
+let msgGlobal = ''
+const main = async (stock_id, val_loss_value, growth_rate_value) => {
     try {
+        msgGlobal = 'RUNNING!'
+        runAnimation()
         let req_body = JSON.stringify({
             stock_id: stock_id || [2330],
             val_loss_value: Number(val_loss_value) || 10**6,
@@ -138,19 +140,71 @@ const main = async function(stock_id, val_loss_value, growth_rate_value) {
             }
             new Chart(ctx, config)
         }
+
+        msgGlobal = 'Success~!'
+        killAnimation('anime1')
+
+
     } catch (err) {
         let function_name = 'drawingGraphForHome.js/main'
         console.error(`-----\t${function_name} occur some error\t-----`)
+
     }
 
    
 
 }
 
-function isNumber(value) {
+const isNumber = (value) => {
     value = Number(value)
-    return typeof(value) === 'number' && !isNaN(value);
-  }
+    return typeof(value) === 'number' && !isNaN(value)
+}
+
+const animationTaskList = {}
+let animationCount = 0
+const runAnimation = async () => {
+
+    const msgBlock = document.querySelector('.msg-fun-but')
+    msgBlock.innerText = msgGlobal
+    msgBlock.style.display = 'flex'
+
+    let dotMsg = ''
+    let count = 0
+    animationTaskList['task'] = setInterval(() => {
+
+        count +=1 
+        dotMsg += '.'
+        msgBlock.innerText = msgGlobal + dotMsg
+
+
+        if (count>5) {
+            count = 0
+            dotMsg = ''
+        }
+    }, 500)
+
+
+}
+
+const killAnimation = async (task) => {
+    const msgBlock = document.querySelector('.msg-fun-but')
+    
+    let opacity = 1
+    const subTask = setInterval(() => {
+        opacity -= 0.04
+        msgBlock.style.opacity = opacity
+        console.log(opacity)
+        if (opacity < 0) {
+            clearInterval(animationTaskList[task])
+            clearInterval(subTask)
+            msgBlock.style.display = 'none'
+
+        }
+    }, 100);
+
+    // msgBlock.style.display = 'disable'
+}
+
 
 const submit_search = async (stock_id, val_loss, growth_rate) => {
     try {
@@ -163,8 +217,6 @@ const submit_search = async (stock_id, val_loss, growth_rate) => {
         let val_loss_value =  val_loss ? Number(val_loss) : Number(document.querySelector('#val_loss').value)
         let growth_rate_value = growth_rate ? Number(growth_rate) : Number(document.querySelector('#growth_rate').value)
 
-        console.log(val_loss_value)
-        console.log(growth_rate_value)
         let messageForWindowAlert = []
         if (!isNumber(val_loss_value)) {
             alert('val_loss got to be number')
@@ -211,4 +263,5 @@ const submit_search = async (stock_id, val_loss, growth_rate) => {
         console.error(`-----\t${function_name} occur some error\t-----`)
     }
 }
+
 

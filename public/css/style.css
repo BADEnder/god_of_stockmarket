@@ -11,6 +11,11 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
+/* 
+input, label, button{
+    display: block
+}  */
+
 :root {
     --HEADER-MIN-HEIGHT: 10vh;
     --FOOTER-MIN-HEIGHT: 6vh;
@@ -18,6 +23,24 @@
     --BANNER-COLOR: #4D3900;
 
     --FORM-WIDTH: 30%;
+
+    --MSG-WIDTH: 20%;
+}
+
+
+.msg-fun-but {
+    position: absolute;
+    width: var(--MSG-WIDTH);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    top: 5%;
+    left: calc((100% - var(--MSG-WIDTH)) / 2);
+}
+
+.msg-style {
+    background-color: rgb(37, 210, 150);
+    border-radius: 10px;
 }
 
 main {
@@ -64,8 +87,23 @@ footer {
     font-size: 3rem;
 }
 
-.bd {
+.bd-1 {
     border: 5px double gray;
+    
+}
+
+.bd-2 {
+    border: 5px;
+    border-style: ridge;
+
+    border-radius: 10px;
+}
+
+.bd-3 {
+    border: 5px ;
+    border-style: groove;
+    border-radius: 10px;
+
 }
 
 [v-cloak] {

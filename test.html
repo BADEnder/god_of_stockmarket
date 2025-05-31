@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box" style="width:50px; height:50px; background:red; position:absolute; left:0;"></div>
+    <button onclick="startAnimation()">Start</button>
+    <button onclick="stopAnimation()">Stop</button>
+
+    <script>
+    let intervalId = null;  // Store interval reference
+    let position = 0;       // Starting position
+
+    function startAnimation() {
+        if (intervalId) return; // Prevent multiple intervals
+
+        intervalId = setInterval(() => {
+        position += 5;
+        document.getElementById('box').style.left = position + 'px';
+            console.log(new Date().getSeconds())
+        if (position >= 300) {
+            position = 100
+            stopAnimation(); // auto-stop when hitting limit
+        }
+        }, 50); // every 50ms
+    }
+
+    function stopAnimation() {
+        clearInterval(intervalId);
+        intervalId = null; // reset to allow restarting
+    }
+    </script>
+</body>
+</html>

@@ -163,12 +163,14 @@ const isNumber = (value) => {
 }
 
 const runAnimation = async () => {
+    // console.warn(Object.keys(animationTaskList))
+    if (Object.keys(animationTaskList).length>0) return
 
     const msgBlock = document.querySelector('.msg-fun-but')
     msgBlock.innerText = msgGlobal
     msgBlock.style.display = 'flex'
 
-    console.log(animationTaskList)
+    // console.log(animationTaskList)
     let dotMsg = ''
     let count = 0
     animationTaskList['anime1'] = setInterval(() => {
@@ -197,7 +199,7 @@ const killAnimation = async (task) => {
         msgBlock.style.opacity = opacity
         // console.log(opacity)
         if (opacity < 0) {
-            console.log('task:', task)
+            // console.log('task:', task)
             clearInterval(animationTaskList[task])
             delete animationTaskList[task]
             clearInterval(subTask)

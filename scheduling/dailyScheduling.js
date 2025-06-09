@@ -99,7 +99,7 @@ const mainFunction = async () => {
 
 
 mainFunction()
-cron.schedule('0 1 17 * * *', async () => {
+cron.schedule('0 1 8 * * *', async () => {
     if (!majorRunningIndex) {
         majorRunningIndex = true
         mainFunction()

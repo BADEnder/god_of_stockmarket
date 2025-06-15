@@ -37,7 +37,7 @@ const desideWebsiteCore = async(data) => {
 
         let result = data.filter((val) => {
             // return Number(val.TradeVolume) >= 10**5 && String(Number(val.Code)) == val.Code
-            return Number(val.TradeVolume) >= 10**5 && checkDigit(val.Code)
+            return Number(val.TradeVolume) >= 10**3 && checkDigit(val.Code)
             // return Number(val.TradeVolume) >= 10**5 
         })
         // console.log('data.length', data.length)

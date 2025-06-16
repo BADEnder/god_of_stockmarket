@@ -98,8 +98,6 @@ def main():
             # 2. Add dense layers
             model.add(tf.keras.layers.Dense(dense_nodes, activation='relu'))
             model.add(tf.keras.layers.Dense(dense_nodes*2, activation='relu'))
-            model.add(tf.keras.layers.Dense(dense_nodes*2, activation='relu'))
-            model.add(tf.keras.layers.Dense(dense_nodes*2, activation='relu'))
 
             model.add(tf.keras.layers.Dropout(dropout_ratio))
 

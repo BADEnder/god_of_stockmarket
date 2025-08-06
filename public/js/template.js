@@ -6,6 +6,15 @@ const headerTemplate = Vue.createApp({
                     name: "Home",
                     url: "/"
                 },
+                {
+                    name: "Stock Price Trend",
+                    url: "/stock_price_trend"
+                },
+                {
+                    name: "Stock Price Probability",
+                    url: "/stock_price_probability"
+                },
+
                 // {
                 //     name: "Setting",
                 //     url: "/setting"

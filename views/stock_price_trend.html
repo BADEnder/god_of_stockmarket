@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/home.css">
+    <title>Stock Martket Emperor</title>
+
+    <script src="/js/packages/vue@3.2.47-prod.js" defer></script>
+    <script src="/js/template.js" defer></script>
+    <script src="/js/packages/chart.js" ></script>
+    <script src="/js/packages/chartjs-adapter-date-fns.js" ></script>
+
+</head>
+<body>
+    <header id="header" class="header container" v-cloak></header>
+    
+    <main class="container p-3">
+        
+        <div class="m-2 p-3 bd-1 ">
+            <div class="m-2 center">Input stock_id and the model is going to predict next 30 days.</div>
+            <div class="m-2 center" style="font-weight: bold;">※ Maximum inputs is 10 each times.</div>
+        </div>
+        
+
+        <div class="m-2 p-3 bd-2">
+            <!-- <h3 class="center">Show The Lowest 10 Closing Price. </h3> -->
+            <h3 class="center">Show The Highest 10 Trading Volumn, and Filter Closing Price Over 100 NT. </h3>
+            <div class="m-3 center">
+                <button id="showMillionTradeVolume" class="m-2" onclick="showMillionTradeVolume()">Over Million</button>
+                <button id="showTenMillionTradeVolume" class="m-2" onclick="showTenMillionTradeVolume()">Over TenMillion</button>
+                <button id="showHundredMillionTradeVolume" class="m-2" onclick="showHundredMillionTradeVolume()">Over HundredMillion</button>
+            </div>
+        </div>
+        
+        <div class="m-2 p-3 bd-3">
+                <div class="m-2 h3">Search:</div>
+                <hr>
+                <label class="m-2" for="stock_id" >Stock_id:</label>
+                <input class="m-2" type="text" id="stock_id">
+                <label class="m-2" for="val_loss">Loss value smaller than: </label>
+                <input class="m-2" type="text" id="val_loss" value="1">
+                <label class="m-2" for="growth_rate" >Growth Rate: </label>
+                <input class="m-2" type="text" id="growth_rate" value="1.03">
+                <button class="m-2" id="submit" class="btn" onclick="submit_search()">Submit</button>
+                <br>
+
+        </div>
+
+
+
+        
+        <div class="msg-fun-but msg-style p-1"></div>
+
+
+        <div id="graph-container">
+        </div>
+
+    </main>
+
+    <footer id="footer" class="footer container" v-cloak></footer>
+   
+    <script src="/js/stock_price_trend/drawingGraphForHome.js"></script>
+    <script src="/js/stock_price_trend/searchTopData.js"></script>
+    <script src="/js/stock_price_trend/eventTriggerForHome.js"></script>
+
+
+</body>
+</html>

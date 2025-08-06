@@ -10,18 +10,23 @@ const getTopInfo = (req, res) => {
         
         result = [...data]
         
-        result = result.filter(val => {return val['ClosingPrice'] && val['ClosingPrice'] <= 100})
+        result = result.filter(val => {return val['ClosingPrice'] && val['ClosingPrice'] <= 1000})
     
         if (query.enoughMillionTradeVolume) {
             result = result.filter(val => {return val['TradeVolume'] >= 10 ** 6})
+            console.log('Data length over 10**6: ', result.length)
         } 
     
         if (query.enoughTenMillionTradeVolume) {
             result = result.filter(val => {return val['TradeVolume'] >= 10 ** 7})
+            console.log('Data length over 10**7: ', result.length)
+
         } 
     
         if (query.enoughHundredMillionTradeVolume) {
             result = result.filter(val => {return val['TradeVolume'] >= 10 ** 8})
+            console.log('Data length over 10**8: ', result.length)
+
         } 
     
     

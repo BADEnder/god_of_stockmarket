@@ -27,7 +27,6 @@ def plt_prediction_and_real_data_diff(x, y, y_predict, date_showed_for_real, dat
 
 def plt_correlation_heatmap_with_pandas_data(data):
     numerical_data = data.select_dtypes(include=['int64', 'float64'])
-    print(numerical_data.columns)
     plt.figure(figsize=(16,12))
     sns.heatmap(numerical_data.corr(), annot=True, cmap='coolwarm')
     plt.title("Feature Correlation Heatmap")
@@ -39,4 +38,6 @@ def plt_trend_of_close_money(data):
     plt.figure(figsize=(18, 6))
     plt.plot(converted_datetime, data['close'])
     plt.show()
+
+
 

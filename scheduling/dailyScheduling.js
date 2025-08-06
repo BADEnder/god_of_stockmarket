@@ -46,7 +46,8 @@ const runMajorSchedulingJob = async () => {
                 console.log('stock_name', stock_name)
                 console.log('---------------')
                 
-                let targetPath = path.join(__dirname, '..', 'models/main.py')
+                // let targetPath = path.join(__dirname, '..', 'models/main.py')
+                let targetPath = path.join(__dirname, '..', 'models/__stockmarket_god.py')
                 let command = `python ${targetPath} ${stock_id} ${stock_name}`
 
                 console.log(command)

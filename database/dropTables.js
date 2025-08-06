@@ -4,11 +4,11 @@ const pgConnect = require('./pgConection')
 const all_query = {
     query1: 
     `
-    DROP TABLE IF EXISTS models
+    DROP TABLE IF EXISTS probability_data
     `,
     query2: 
     `
-    DROP TABLE IF EXISTS infos
+    DROP TABLE IF EXISTS best_model_data
     `,
 
     

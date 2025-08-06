@@ -1,12 +1,7 @@
-// const pgConfig = require('../database/pgConfig')
-// const checkSQLInjection = require('../database/checkSQLInjection')
 const path = require('path')
 const fs = require('fs')
 const fsPromise = fs.promises
-
-const https = require('https')
 const axios = require('axios')
-
 const date_fns = require('date-fns')
 
 
@@ -36,13 +31,9 @@ const desideWebsiteCore = async(data) => {
     try {
 
         let result = data.filter((val) => {
-            // return Number(val.TradeVolume) >= 10**5 && String(Number(val.Code)) == val.Code
-            return Number(val.TradeVolume) >= 10**3 && checkDigit(val.Code)
-            // return Number(val.TradeVolume) >= 10**5 
+            return Number(val.TradeVolume) >= 10**7 && checkDigit(val.Code)
         })
-        // console.log('data.length', data.length)
-        // console.log('result.length', result.length)
-        // console.log('result:\n', result)
+
     
     
         const today = date_fns.format(new Date(), 'yyyyMMdd')
@@ -58,12 +49,7 @@ const desideWebsiteCore = async(data) => {
             await fsPromise.mkdir(fileDirectory)
         }
     
-        // console.log('fileDirectory', fileDirectory)
-
-
-        // const filename = path.join(fileDirectory, 'master.json')
         const filename_all_data = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
-        
         await fsPromise.writeFile(filename_all_data, JSON.stringify(data, null, 4))
 
         const filename_master = path.join(fileDirectory, 'master.json')
@@ -72,7 +58,6 @@ const desideWebsiteCore = async(data) => {
     } catch (err) {
         console.error(err.name)
         // res.status(500).json({msg: 'Fail!'})
-
     }
 }
 

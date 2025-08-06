@@ -14,7 +14,7 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
         })
     
         const getStockMarketData = await fetch(
-            '/api/getStockMarketData', {
+            '/api/get_trend_data', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -23,8 +23,10 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
             }
     
         )
+
     
         const stockMarketData = await getStockMarketData.json()
+        console.warn(stockMarketData)
         stockMarketData.map((obj) => STOCK_ID_ALREADY_GET.add(obj['stock_id']))
         console.log(STOCK_ID_ALREADY_GET)
         // const refer_result = await getStockName.json()
@@ -35,8 +37,8 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
             let obj = stockMarketData[idx]
             // let ref_obj = refer_result[idx]
             let data = {
-                real: obj['datasets']['real'],
-                predict: obj['datasets']['predict']
+                real: obj['real_data'],
+                predict: obj['predict_data']
         
             }
     
@@ -44,7 +46,12 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
             
             // ctx.id = `myChart_${idx}`
             // ctx.innerHTML = `<canvas id="myChart_${idx}" style="border: 10px solid black"></canvas>`
-            ctx.innerHTML = `<canvas id="myChart_${idx}"></canvas>`
+            // ctx.innerHTML = 
+            // `
+            //     <div id="chart-container" style="position: relative; width: 100%; height: 50vh;">
+            //     <canvas id="myChart_${idx}"></canvas>
+            //     </div>
+            // `
             graph_container.appendChild(ctx)
             ctx = ctx.getContext('2d')
             
@@ -56,18 +63,23 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
                     {
                         label: `Real Data`,
                         data: data['real'],
-                        backgroundColor: `rgba(255, 0, 188, 1)`,
-                        // borderWidth: 5
-        
-                        // borderColor: `rgb(15, 165, 102)`,
+                        backgroundColor: `rgba(255, 99, 132, 0.2)`,
+                        borderColor: `rgba(255, 99, 132, 0.4)`,
+                        borderWidth: 2,
+                        pointBorderWidth: 5,
+                        pointStyle: 'triangle'
+
                     },
                     {
                         label: `Model Prediction`,
                         data: data['predict'],
-                        backgroundColor: `rgba(${0}, 203, 188, 1)`,
-                        // borderWidth: 0.1
-        
-                        // borderColor: `rgb(15, 165, 102)`,
+                        backgroundColor: `rgba(153, 102, 255, 0.2)`,
+                        borderColor: `rgba(75, 192, 192, 0.4)`,
+                        borderWidth: 2,
+                        pointBorderWidth: 8,
+                        pointStyle: 'star'
+
+
                     },
                 ]
             }
@@ -77,12 +89,11 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
             const config = {
                 "type": 'line',
                 "data": data,
-                line: {
-                    borderWidth: 1
-                },
+
                 options: {
-                    responsive: true,
+                    // responsive: false,
                     // maintainAspectRatio: false, // Set to false for better scaling on small screens
+                    aspectRatio: 1,
                     // title: {
                     //     display: true,
                     //     text: 'Custom Chart Title'
@@ -93,8 +104,9 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
                             // text: `Stock ID: ${obj['stock_id']}, Stock Name: ${ref_obj['Name']}`,
                             text: 
                             [
-                                `Stock ID: ${obj['stock_id']}, Stock Name: ${obj['stock_name']}\n`,
-                                `( Loss: ${Number(obj['loss_val']).toFixed(2)}, Growth Rate: ${Number((obj['day_5_prediction'] / obj['day_0_prediction'])).toFixed(2)}, Data Date: ${obj['data_date'].substring(0, 10)})`
+                                `Stock ID: ${obj['stock_id']}, Stock Name: ${obj['stock_name']}`,
+                                `< Loss: ${Number(obj['loss_val']).toFixed(2)}, Data Date: ${obj['data_date'].substring(0, 10)}>`,
+                                `< Growth Rate in 5 days: ${Number(obj['groth_rate_5_days']).toFixed(2)}, Growth Rate in 10 days: ${Number(obj['groth_rate_10_days']).toFixed(2)} >`
                             ],
                             font: {
                                 size: 24,
@@ -184,7 +196,7 @@ const runAnimation = async () => {
             count = 0
             dotMsg = ''
         }
-        console.log('sec', new Date().getSeconds())
+        // console.log('sec', new Date().getSeconds())
     }, 1000)
 
 

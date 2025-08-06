@@ -1,0 +1,190 @@
+let STOCK_ID_ALREADY = ''
+const animationTaskList = {}
+let msgGlobal = ''
+
+
+const runAnimation = async () => {
+    // console.warn(Object.keys(animationTaskList))
+    if (Object.keys(animationTaskList).length>0) return
+
+    const msgBlock = document.querySelector('.msg-fun-but')
+    msgBlock.innerText = msgGlobal
+    msgBlock.style.display = 'flex'
+
+    // console.log(animationTaskList)
+    let dotMsg = ''
+    let count = 0
+    animationTaskList['anime1'] = setInterval(() => {
+
+        count +=1 
+        dotMsg += '.'
+        msgBlock.innerText = msgGlobal + dotMsg
+
+
+        if (count>5) {
+            count = 0
+            dotMsg = ''
+        }
+        // console.log('sec', new Date().getSeconds())
+    }, 1000)
+
+
+}
+
+const killAnimation = async (task) => {
+    const msgBlock = document.querySelector('.msg-fun-but')
+    
+    let opacity = 1
+    const subTask = setInterval(() => {
+        opacity -= 0.04
+        msgBlock.style.opacity = opacity
+        // console.log(opacity)
+        if (opacity < 0) {
+            // console.log('task:', task)
+            clearInterval(animationTaskList[task])
+            delete animationTaskList[task]
+            clearInterval(subTask)
+            msgBlock.style.display = 'none'
+
+        }
+    }, 100);
+
+    // msgBlock.style.display = 'disable'
+}
+
+
+const submit_search = async (stock_id) => {
+    try {
+
+        
+        const stock_id_value = stock_id ? stock_id.join(',') : document.querySelector('#stock_id').value.trim()
+
+        if (stock_id_value == STOCK_ID_ALREADY) {
+            alert(`${stock_id_value} already shown!`)
+        } else {
+            STOCK_ID_ALREADY = stock_id_value
+        }
+
+        main(stock_id_value)
+    
+    } catch (err) {
+        let function_name = '/js/stock_price_probability/main.js/submit_stock_id_search'
+        console.error(`-----\t${function_name} occur some error\t-----`)
+    }
+}
+
+const showGraph = (data) => {
+    let graph_container =  document.querySelector(`#graph-container`)
+    
+    // data = data.slice(0, 1)
+    data = data['predict_data']
+    for (let idx in data) {
+        let row = data[idx]
+
+        let ctx = document.createElement('canvas')
+        graph_container.appendChild(ctx)
+        ctx = ctx.getContext('2d')
+
+
+        //  ctx = document.getElementById('myChart').getContext('2d')
+        const x = row['edges'].map((val) => {return val.toFixed(2)}).slice(0, -1)
+        const y = row['probability']
+        
+
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: x.map(String),  // convert x to strings for axis labels
+            datasets: [{
+                label: `Day: ${Number(idx)+1}`,
+                data: y,
+                backgroundColor: `rgba(${Number(idx)*2}, ${Number(idx)*10}, ${Number(idx)*5}, 0.6)`,
+                borderColor: `rgba(${Number(idx)*2}, ${Number(idx)*10}, ${Number(idx)*5}, 1)`,
+                // backgroundColor: `rgba(75, 192, 192, 0.6)`,
+                // borderColor: `rgba(75, 192, 192, 1)`,
+                borderWidth: 1
+            }]
+            },
+            options: {
+
+            scales: {
+                y: {
+                beginAtZero: true
+                }
+            }
+            }
+        })
+    }
+    
+
+}
+const main = async (stock_id) => {
+    try {
+        msgGlobal = 'Search Ruuning'
+            // runAnimation()
+
+            let req_body = JSON.stringify({
+                stock_id: stock_id
+            })
+
+            console.log('req_body:', req_body)
+            const getStockMarketData = await fetch(
+                '/api/get_probability_data', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: req_body
+                }
+
+            )
+
+            result = await getStockMarketData.json()
+
+            showGraph(result[0])
+            console.log(result[0])
+            // killAnimation('anime1')
+    } catch (err) {
+        console.log('err.name', err.name)
+    }
+   
+}
+
+// let graph_container =  document.querySelector(`#graph-container`)
+
+// let ctx = document.createElement('canvas')
+//         graph_container.appendChild(ctx)
+//         ctx = ctx.getContext('2d')
+
+
+//         //  ctx = document.getElementById('myChart').getContext('2d')
+//         // const x = row['edges'].slice(0, -1)
+//         // const y = row['probability']
+//         const x = [74.02935791015625, 75.4122314453125, 76.79510498046875]
+//             const y = [1, 0, 2]
+        
+//         console.log(x)
+//         console.log(y)
+
+//         const myChart = new Chart(ctx, {
+//             type: 'bar',
+//             data: {
+//             labels: x.map(String),  // convert x to strings for axis labels
+//             datasets: [{
+//                 label: 'My Data',
+//                 data: y,
+//                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
+//                 borderColor: 'rgba(75, 192, 192, 1)',
+//                 borderWidth: 1
+//             }]
+//             },
+//             options: {
+//             responsive: true,
+//             maintainAspectRatio: false,
+//             scales: {
+//                 y: {
+//                 beginAtZero: true
+//                 }
+//             }
+//             }
+//         })

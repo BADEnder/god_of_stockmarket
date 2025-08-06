@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>Chart.js Bar Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #chart-container {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      margin: auto;
+    }
+  </style>
 </head>
 <body>
-    <div id="box" style="width:50px; height:50px; background:red; position:absolute; left:0;"></div>
-    <button onclick="startAnimation()">Start</button>
-    <button onclick="stopAnimation()">Stop</button>
 
-    <script>
-    let intervalId = null;  // Store interval reference
-    let position = 0;       // Starting position
+  <div id="chart-container">
+    <canvas id="myChart"></canvas>
+  </div>
 
-    function startAnimation() {
-        if (intervalId) return; // Prevent multiple intervals
+  <script>
+    const x = [50, 60, 70];
+    const y = [1, 4, 5];
 
-        intervalId = setInterval(() => {
-        position += 5;
-        document.getElementById('box').style.left = position + 'px';
-            console.log(new Date().getSeconds())
-        if (position >= 300) {
-            position = 100
-            stopAnimation(); // auto-stop when hitting limit
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: x.map(String),  // convert x to strings for axis labels
+        datasets: [{
+          label: 'My Data',
+          data: y,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
         }
-        }, 50); // every 50ms
-    }
+      }
+    });
+  </script>
 
-    function stopAnimation() {
-        clearInterval(intervalId);
-        intervalId = null; // reset to allow restarting
-    }
-    </script>
 </body>
 </html>

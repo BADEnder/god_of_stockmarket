@@ -16,14 +16,32 @@
 </head>
 <body>
     <header id="header" class="header container" v-cloak></header>
-    
+
     <main class="container p-3">
-        <h1> Here is goona show newest data with positive groth rate</h1>
-        
+
+        <div class="m-2 p-3 bd-3">
+            <div class="m-2 h3">Search:</div>
+            <hr>
+            <label class="m-2" for="stock_id">Stock_id:</label>
+            <input class="m-2" type="text" id="stock_id" value="3706">
+            <button class="m-2" id="submit" class="btn" onclick="submit_search()">Submit</button>
+            <br>
+
+        </div>
+        <div id="graph-container">
+        </div>
+
+        <!-- <div id="chart-container"> -->
+            <!-- <canvas id="myChart"></canvas> -->
+        <!-- </div> -->
+
+
     </main>
 
     <footer id="footer" class="footer container" v-cloak></footer>
-   
+
+
+    <script src="/js/stock_price_probability/main.js"></script>
 
 </body>
 </html>

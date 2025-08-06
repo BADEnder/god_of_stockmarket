@@ -75,7 +75,16 @@ const submit_search = async (stock_id) => {
 
 const showGraph = (data) => {
     let graph_container =  document.querySelector(`#graph-container`)
+    let title =  document.querySelector(`#title`)
     
+    title.innerHTML = 
+    `
+        <div>
+            <h1> Stock ID: ${data['stock_id']}</h1>
+            <h1> Stock Name: ${data['stock_name']} </h1>
+        </div>
+    `
+    graph_container.innerHTML = ''
     // data = data.slice(0, 1)
     data = data['predict_data']
     for (let idx in data) {
@@ -87,9 +96,16 @@ const showGraph = (data) => {
 
 
         //  ctx = document.getElementById('myChart').getContext('2d')
-        const x = row['edges'].map((val) => {return val.toFixed(2)}).slice(0, -1)
+        const x = row['edges'].map((val, idx) => {
+            if (idx != row['edges'].length-1) {
+                // console.warn((row['edges'][idx] + row['edges'][idx+1]) / 2)
+                return ((row['edges'][idx] + row['edges'][idx+1]) / 2).toFixed(2)}
+
+            }
+        ).slice(0, -1)
         const y = row['probability']
         
+        console.log(y)
 
         const myChart = new Chart(ctx, {
             type: 'bar',
@@ -108,8 +124,23 @@ const showGraph = (data) => {
             options: {
 
             scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Price'
+                    }
+                },
                 y: {
-                beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Frequency'
+                    }, 
+                    ticks: {
+                        callback: function(value) {
+                            return Number.isInteger(value) ? value: ''
+                        }
+                    }
                 }
             }
             }

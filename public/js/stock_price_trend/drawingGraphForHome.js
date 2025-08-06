@@ -117,25 +117,25 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
                         x: {
                             type: 'time',
                             time: {
-                            unit: 'day',
+                                unit: 'day',
                             // tooltipFormat: 'yyyy-MM-dd'
                             },
                             title: {
-                            display: true,
-                            text: 'Date'
+                                display: true,
+                                text: 'Date'
                             }, 
                             grid: {
-                            display: false
+                                display: false
                             },
                             ticks: {
-                            maxTicksLimit: 7
+                                maxTicksLimit: 7
                             },
                         },
                         y: {
                             beginAtZero: true,
                             title: {
-                            display: true,
-                            text: 'Value'
+                                display: true,
+                                text: 'Price'
                             }
                         },
     

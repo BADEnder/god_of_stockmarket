@@ -79,9 +79,9 @@ const showGraph = (data) => {
     
     title.innerHTML = 
     `
-        <div>
-            <h1> Stock ID: ${data['stock_id']}</h1>
-            <h1> Stock Name: ${data['stock_name']} </h1>
+        <div >
+            <div class="center" style="font-size:32pt;"> Stock ID: ${data['stock_id']}</div>
+            <div class="center" style="font-size:32pt;"> Stock Name: ${data['stock_name']} </div>
         </div>
     `
     graph_container.innerHTML = ''

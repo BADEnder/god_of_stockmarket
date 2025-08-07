@@ -48,7 +48,7 @@ try:
     print('stock_name', stock_name)
     # stock_id, stock_name = 3706, '神達'
 
-    time_steps = 10
+    time_steps = 60
 
     drop_columns = [
         'Trading_money', 'open', 'max', 'min',
@@ -67,7 +67,7 @@ try:
     
 
     # Step 6: Recursive Prediction for 10 Future Days
-    times = 10
+    times = 20
     days = 10
     predictions = [[] for day in range(days)]
 
@@ -110,7 +110,7 @@ try:
                     
                     last_seq = X[-1]  # shape (5, 2)
                     for day in range(days):
-                        pred = model.predict(last_seq[np.newaxis, ...], verbose=0)[0]
+                        pred = model.predict(last_seq[np.newaxis, ...], verbose=1)[0]
                         # print('pred: ', pred)
                         predictions[day].append(pred)
                         last_seq = np.vstack([last_seq[1:], pred])  # slide window

@@ -91,7 +91,7 @@ const main = async (stock_id, val_loss_value, growth_rate_value) => {
                 "data": data,
 
                 options: {
-                    // responsive: false,
+                    // responsive: true,
                     // maintainAspectRatio: false, // Set to false for better scaling on small screens
                     aspectRatio: 1,
                     // title: {

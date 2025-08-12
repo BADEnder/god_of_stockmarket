@@ -48,7 +48,7 @@ try:
     print('stock_name', stock_name)
     # stock_id, stock_name = 3706, '神達'
 
-    time_steps = 20
+    time_steps = 60
 
     drop_columns = [
         'Trading_money', 'open', 'max', 'min',
@@ -67,7 +67,7 @@ try:
     
 
     # Step 6: Recursive Prediction for 10 Future Days
-    times = 10
+    times = 50
     days = 10
     predictions = [[] for day in range(days)]
 
@@ -88,9 +88,11 @@ try:
 
                     model = tf.keras.models.Sequential([
                         tf.keras.layers.Input(shape=(time_steps, 5)),
-                        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(2*nodes, return_sequences=True)),
+                        # tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(2*nodes, return_sequences=True)),
+                        tf.keras.layers.LSTM(2*nodes, return_sequences=True),
                         tf.keras.layers.Dropout(dropout_ratio),
-                        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(2*nodes, return_sequences=False)),
+                        # tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(2*nodes, return_sequences=False)),
+                        tf.keras.layers.LSTM(2*nodes, return_sequences=False),
                         tf.keras.layers.Dropout(dropout_ratio),
                         tf.keras.layers.Dense(2*nodes, activation='relu'),
                         tf.keras.layers.Dropout(dropout_ratio),
@@ -105,7 +107,7 @@ try:
                         # tf.keras.utils.plot_model(model, to_file="model.png", show_shapes=True, show_layer_names=True)
 
                     # Step 5: Train Model
-                    model.fit(X, y, epochs=5, batch_size=32, validation_split=0.1, verbose=0)
+                    model.fit(X, y, epochs=5, batch_size=32, validation_split=0.1, verbose=1)
 
                     
                     last_seq = X[-1]  # shape (5, 2)
@@ -221,6 +223,7 @@ try:
     run_change_query(query1)
     run_change_query(query2)
 
+    
 except:
     print('Some error happened!')
 

@@ -48,7 +48,7 @@ try:
     print('stock_name', stock_name)
     # stock_id, stock_name = 3706, '神達'
 
-    time_steps = 220
+    time_steps = 100
 
     drop_columns = [
         'Trading_money', 'open', 'max', 'min',

@@ -6,6 +6,7 @@
     <link rel="icon" href="/img/logo.png" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/home/table_style.css">
     <title>Stock Martket Emperor</title>
 
     <script src="/js/packages/vue@3.2.47-prod.js" defer></script>
@@ -18,11 +19,25 @@
     <header id="header" class="header container" v-cloak></header>
     
     <main class="container p-3">
-        <h1>This is somewhere that's gonna show the table data.</h1>
+
+        <table id="content_container">
+            <tr>
+                <th>No</th>
+                <th>Data Date</th>
+                <th>Stock ID</th>
+                <th>Stock Name</th>
+                <th>Growth Rate (5 days)</th>
+                <th>Growth Rate (10 days)</th>
+            </tr>
+        <div class="t-body" id="t-body">
+        </div>
+
+        </table>
     </main>
 
     <footer id="footer" class="footer container" v-cloak></footer>
-   
+
+    <script src="/js/home/main.js"></script>
 
 </body>
 </html>

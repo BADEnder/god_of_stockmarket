@@ -64,7 +64,7 @@ const post_home_data = async (req, res) => {
 
     query += 
     `
-    ORDER BY MAIN.groth_rate_5_days DESC
+    ORDER BY MAIN.data_date DESC, MAIN.groth_rate_5_days DESC
     `
 
     const client = pgConfig()

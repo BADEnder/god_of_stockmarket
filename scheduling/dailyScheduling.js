@@ -57,7 +57,7 @@ const runMajorSchedulingJob = async () => {
                             console.error(`Execution Got Error:\n ${error}`)
                             return
                           }
-                        // console.log(`Execution Stdout:\n ${stdout}`)
+                        console.log(`Execution Stdout:\n ${stdout}`)
                     })
                     
 

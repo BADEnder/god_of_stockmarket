@@ -52,12 +52,12 @@ const runMajorSchedulingJob = async () => {
 
                 console.log(command)
                 if (stock_id != 'UNKNOWN') {
-                    exec(command, (error, stdout, stderr) => {
+                    exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
                         if (error) {
                             console.error(`Execution Got Error:\n ${error}`)
                             return
                           }
-                          console.log(`Execution Stdout:\n ${stdout}`)
+                        // console.log(`Execution Stdout:\n ${stdout}`)
                     })
                     
 

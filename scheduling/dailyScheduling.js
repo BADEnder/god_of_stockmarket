@@ -27,7 +27,7 @@ const runMajorSchedulingJob = async () => {
     try {
     
         let checkJob = setInterval(async () => {
-            let runningStatusPath = path.joi(__dirname, '..', 'config', 'runningStatus.txt')
+            let runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.txt')
 
             try {
                 let runningStatusNow = await fsPromise.readFile(runningStatusPath, 'utf-8')

@@ -27,56 +27,61 @@ const runMajorSchedulingJob = async () => {
     try {
     
         let checkJob = setInterval(async () => {
-            let runningStatusPath = path.join(__dirname, '..', 'config', 'runningStatus.txt')
+            let runningStatusPath = path.joi(__dirname, '..', 'config', 'runningStatus.txt')
 
-            let runningStatusNow = await fsPromise.readFile(runningStatusPath, 'utf-8')
-            console.log('STATUS: 1, RUNNING!')
-            
-            // console.log(runningStatusNow.trim())
-            if (runningStatusNow.trim() != 1) {
-
-                let row = targetStockIdArray.shift()
-                stock_id = row['Code']
-                stock_name = row['Name']
-
-                console.log('STATUS: 0, NOT RUNNING!')
-                console.log('---------------')
-                console.log('Rest Target Length', targetStockIdArray.length)
-                console.log('stock_id', stock_id)
-                console.log('stock_name', stock_name)
-                console.log('---------------')
+            try {
+                let runningStatusNow = await fsPromise.readFile(runningStatusPath, 'utf-8')
+                console.log('STATUS: 1, RUNNING!')
                 
-                // let targetPath = path.join(__dirname, '..', 'models/main.py')
-                let targetPath = path.join(__dirname, '..', 'models/__stockmarket_god.py')
-                let command = `python ${targetPath} ${stock_id} ${stock_name}`
+                // console.log(runningStatusNow.trim())
+                if (runningStatusNow.trim() != 1) {
 
-                console.log(command)
-                if (stock_id != 'UNKNOWN') {
-                    exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
-                        if (error) {
-                            console.error(`Execution Got Error:\n ${error}`)
-                            return
-                          }
-                        console.log(`Execution Stdout:\n ${stdout}`)
-                    })
+                    let row = targetStockIdArray.shift()
+                    stock_id = row['Code']
+                    stock_name = row['Name']
+
+                    console.log('STATUS: 0, NOT RUNNING!')
+                    console.log('---------------')
+                    console.log('Rest Target Length', targetStockIdArray.length)
+                    console.log('stock_id', stock_id)
+                    console.log('stock_name', stock_name)
+                    console.log('---------------')
                     
+                    // let targetPath = path.join(__dirname, '..', 'models/main.py')
+                    let targetPath = path.join(__dirname, '..', 'models/__stockmarket_god.py')
+                    let command = `python ${targetPath} ${stock_id} ${stock_name}`
 
-                } 
-        
-                await fsPromise.writeFile(runningStatusPath, '1', 'utf-8')
-        
-            }
+                    console.log(command)
+                    if (stock_id != 'UNKNOWN') {
+                        exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
+                            if (error) {
+                                console.error(`Execution Got Error:\n ${error}`)
+                                return
+                            }
+                            console.log(`Execution Stdout:\n ${stdout}`)
+                        })
+                        
 
-            if (targetStockIdArray.length == 0) {
-                clearInterval(checkJob)
-                let endTime = new Date()
-                console.log('---------------------------------------------')
-                console.log(`Start Time: ${dateFns.format(startTime, 'yyyy-MM-dd HH:mm:ss')}`)
-                console.log(`End Time: ${dateFns.format(endTime, 'yyyy-MM-dd HH:mm:ss')}`)
-                console.log(`Total Running Time: ${(endTime - startTime) / (1000 * 60)} (mins)`)
-                console.log('---------------------------------------------')
-                majorRunningIndex = false
+                    } 
+            
+                    await fsPromise.writeFile(runningStatusPath, '1', 'utf-8')
+            
+                }
+
+                if (targetStockIdArray.length == 0) {
+                    clearInterval(checkJob)
+                    let endTime = new Date()
+                    console.log('---------------------------------------------')
+                    console.log(`Start Time: ${dateFns.format(startTime, 'yyyy-MM-dd HH:mm:ss')}`)
+                    console.log(`End Time: ${dateFns.format(endTime, 'yyyy-MM-dd HH:mm:ss')}`)
+                    console.log(`Total Running Time: ${(endTime - startTime) / (1000 * 60)} (mins)`)
+                    console.log('---------------------------------------------')
+                    majorRunningIndex = false
+                }
+            } catch (err) {
+                await fsPromise.writeFile(runningStatusPath, '0', 'utf-8')
             }
+            
 
         }, 10*1000)
 

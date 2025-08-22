@@ -27,7 +27,10 @@ input, label, button{
     --MSG-WIDTH: 20%;
 }
 
-
+.a {
+    font-weight: bold !important;
+    color: #612374 !important;
+}
 .msg-fun-but {
     position: absolute;
     width: var(--MSG-WIDTH);

@@ -180,3 +180,15 @@ const main = async (stock_id) => {
     }
    
 }
+
+const init = () => {
+    const params = new URLSearchParams(window.location.search);
+    const stock_id = params.get('stock_id');
+    // console.log('Stock ID from URL:', stockId);
+    if (stock_id) {
+        document.querySelector('#stock_id').value = stock_id
+    }
+    document.querySelector('#submit').click()
+}
+
+init()

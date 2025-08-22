@@ -29,7 +29,7 @@ const main = async () => {
         row.innerHTML = `
         <td>${Number(idx) + 1}</td>
         <td>${item.data_date}</td>
-        <td>${item.stock_id}</td>
+        <td><a class="a" target="_blank" href="/stock_price_trend?stock_id=${item.stock_id}">${item.stock_id}</a></td>
         <td>${item.stock_name}</td>
         <td>${parseFloat(item.groth_rate_5_days).toFixed(2)}%</td>
         <td>${parseFloat(item.groth_rate_10_days).toFixed(2)}%</td>
@@ -39,3 +39,15 @@ const main = async () => {
 }
 
 main()
+
+const init = () => {
+    const params = new URLSearchParams(window.location.search);
+    const stock_id = params.get('stock_id');
+    // console.log('Stock ID from URL:', stockId);
+    if (stock_id) {
+        document.querySelector('#stock_id').value = stock_id
+    }
+    document.querySelector('#submit').click()
+}
+
+init()

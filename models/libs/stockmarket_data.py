@@ -128,19 +128,19 @@ def catch_data_from_finmind(stock_id, start_date, end_date, drop_columns):
     stock_data['date'] = pd.to_datetime(stock_data['date'])
     stock_data = stock_data.sort_values('date')
 
+    merged_df = stock_data.copy()
     # 將EPS和BVPS合併到股價資料中
     # 先將EPS和BVPS merge 至股價資料上（左連結）
-    merged_df = stock_data.merge(eps_df, on='date', how='left')
-    merged_df = merged_df.merge(bvps_df, on='date', how='left')
+    # merged_df = stock_data.merge(eps_df, on='date', how='left')
+    # merged_df = merged_df.merge(bvps_df, on='date', how='left')
 
     # 對EPS和BVPS做向前填補（forward-fill），因財報通常每季一次
-    merged_df[['EPS', 'BVPS']] = merged_df[['EPS', 'BVPS']].ffill()
+    # merged_df[['EPS', 'BVPS']] = merged_df[['EPS', 'BVPS']].ffill()
     merged_df["RSI"] = compute_rsi(merged_df["close"], window=14)
 
     df = merged_df.dropna().reset_index(drop=True)
 
-    # 檢查合併結果
-    # print(merged_df.tail(60))
+
 
     ref_columns = set(df.columns)
     for col in drop_columns:
@@ -148,6 +148,9 @@ def catch_data_from_finmind(stock_id, start_date, end_date, drop_columns):
 
             df = df.drop(columns=[col], axis=1)
 
+    # 檢查最終結果
+    print(df.tail(20))
+    print('length:', len(df.columns))
     return df
 
 # Create time series windows

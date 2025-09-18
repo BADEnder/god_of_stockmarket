@@ -48,7 +48,7 @@ try:
     print('stock_name', stock_name)
     # stock_id, stock_name = 3706, '神達'
 
-    time_steps = 100
+    time_steps = 5
 
     drop_columns = [
         'Trading_money', 'open', 'max', 'min',
@@ -67,7 +67,7 @@ try:
     
 
     # Step 6: Recursive Prediction for 10 Future Days
-    times = 50
+    times = 20
     days = 10
     predictions = [[] for day in range(days)]
 
@@ -77,7 +77,9 @@ try:
     best_lr = None
     lowest_val_loss = float('inf')
 
-
+    print(X)
+    print(y)
+    
     print('Data preparing success!')
     for no in range(1, times+1):
         print(f"No.{no}")
@@ -87,7 +89,7 @@ try:
 
 
                     model = tf.keras.models.Sequential([
-                        tf.keras.layers.Input(shape=(time_steps, 5)),
+                        tf.keras.layers.Input(shape=(time_steps, len(features.columns))),
                         # tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(2*nodes, return_sequences=True)),
                         tf.keras.layers.LSTM(2*nodes, return_sequences=True),
                         tf.keras.layers.Dropout(dropout_ratio),
@@ -98,7 +100,7 @@ try:
                         tf.keras.layers.Dropout(dropout_ratio),
                         tf.keras.layers.Dense(nodes, activation='relu'),
 
-                        tf.keras.layers.Dense(5)  # Output:
+                        tf.keras.layers.Dense(len(features.columns))  # Output:
                     ])
                     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='mse', metrics=['mae'])
 

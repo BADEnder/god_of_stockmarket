@@ -15,7 +15,7 @@ alias python="python3";
 python3 -m venv .pyvm ;
 source .pyvm/bin/activate;
 
-pip install -r py_package_req.txt;
+pip install -r py_package_req.txt --exists-action=i;
 npm install -d 
 
 deactivate

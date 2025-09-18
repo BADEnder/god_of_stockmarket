@@ -2,6 +2,8 @@
 
 
 sudo apt update ;
+apt install net-tools;
+# apt install firewalld;
 sudo apt install nodejs ;
 sudo apt install npm ;
 sudo apt install python3-pip ;

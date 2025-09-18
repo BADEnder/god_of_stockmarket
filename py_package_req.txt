@@ -68,6 +68,7 @@ prettytable==3.16.0
 prompt_toolkit==3.0.52
 propcache==0.3.2
 protobuf==6.32.1
+psycopg==3.2.10
 ptyprocess==0.7.0
 pure_eval==0.2.3
 pycparser==2.23

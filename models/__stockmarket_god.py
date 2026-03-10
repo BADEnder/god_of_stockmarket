@@ -68,7 +68,7 @@ try:
     
 
     # Step 6: Recursive Prediction for 10 Future Days
-    times = 1
+    times = 10
     days = 10
     predictions = [[] for day in range(days)]
 

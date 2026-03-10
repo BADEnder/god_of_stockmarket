@@ -136,7 +136,7 @@ def catch_data_from_finmind(stock_id, start_date, end_date, drop_columns):
 
     # 對EPS和BVPS做向前填補（forward-fill），因財報通常每季一次
     # merged_df[['EPS', 'BVPS']] = merged_df[['EPS', 'BVPS']].ffill()
-    merged_df["RSI"] = compute_rsi(merged_df["close"], window=14)
+    # merged_df["RSI"] = compute_rsi(merged_df["close"], window=14)
 
     df = merged_df.dropna().reset_index(drop=True)
 

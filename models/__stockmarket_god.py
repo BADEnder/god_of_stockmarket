@@ -24,7 +24,7 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 try:
     # 1. Download data
-    years = 5
+    years = 0.25
     end_date = date.today()
     start_date, end_date = (end_date - td(days=years*365)).strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
 
@@ -51,7 +51,8 @@ try:
     time_steps = 5
 
     drop_columns = [
-        'Trading_money', 'open', 'max', 'min',
+        'Trading_Volume', 'Trading_money', 'open', 'max', 'min',
+        # 'Trading_money', 'open', 'max', 'min',
         'spread', 'Trading_turnover', 'Foreign_Investor_diff',
         'Investment_Trust_diff', 'Margin_Purchase_diff', 'Short_Sale_diff',
     ]
@@ -67,7 +68,7 @@ try:
     
 
     # Step 6: Recursive Prediction for 10 Future Days
-    times = 10
+    times = 1
     days = 10
     predictions = [[] for day in range(days)]
 
@@ -144,8 +145,9 @@ try:
     best_model_prediction = best_model_prediction.reshape(-1, best_model_prediction.shape[2])
     best_model_prediction = scaler.inverse_transform(best_model_prediction)
 
-    best_model_prediction_volume = best_model_prediction[:, 0]
-    best_model_prediction_close = best_model_prediction[:, 1]
+    # best_model_prediction_volume = best_model_prediction[:, 0]
+    # best_model_prediction_close = best_model_prediction[:, 1]
+    best_model_prediction_close = best_model_prediction[:, 0]
 
 
     predictions_backup = predictions
@@ -157,13 +159,14 @@ try:
 
         predicted_real_data = scaler.inverse_transform(predictions)
 
-        volume_vals = predicted_real_data[:, 0]
-        close_vals = predicted_real_data[:, 1]
+        # volume_vals = predicted_real_data[:, 0]
+        # close_vals = predicted_real_data[:, 1]
+        close_vals = predicted_real_data[:, 0]
 
-        volume_bins = np.histogram_bin_edges(volume_vals, bins='auto')
+        # volume_bins = np.histogram_bin_edges(volume_vals, bins='auto')
         close_bins = np.histogram_bin_edges(close_vals, bins='auto')
 
-        volume_hist, _ = np.histogram(volume_vals, bins=volume_bins)
+        # volume_hist, _ = np.histogram(volume_vals, bins=volume_bins)
         close_hist, _ = np.histogram(close_vals, bins=close_bins)
 
         obj = {
@@ -226,8 +229,8 @@ try:
     run_change_query(query2)
 
     
-except:
-    print('Some error happened!')
-
+except Exception as e:
+    print('Some error happened:')
+    print(f"An error occurred: {e}")
 finally:
     reset_running_status()

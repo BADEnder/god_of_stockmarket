@@ -149,8 +149,8 @@ def catch_data_from_finmind(stock_id, start_date, end_date, drop_columns):
             df = df.drop(columns=[col], axis=1)
 
     # 檢查最終結果
-    print(df.tail(20))
-    print('length:', len(df.columns))
+    # print(df.tail(20))
+    # print('length:', len(df.columns))
     return df
 
 # Create time series windows

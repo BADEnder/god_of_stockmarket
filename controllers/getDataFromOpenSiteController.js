@@ -19,11 +19,9 @@ const getDataFromOpenSite = async (req, res) => {
 }
 
 const checkDigit = (word) => {
-    for (let char of word) {
-        if (String(Number(char)) != char) {
-            return false
-        }
-    } 
+    if (String(Number(word)) !== word) {
+        return false
+    }
     return true
 }
 
@@ -33,6 +31,7 @@ const desideWebsiteCore = async(data) => {
         let result = data.filter((val) => {
             return Number(val.TradeVolume) >= 5*10**6 && checkDigit(val.Code)
         })
+        console.log('hello world:!!!!', result.length)
 
     
     
@@ -49,7 +48,7 @@ const desideWebsiteCore = async(data) => {
             await fsPromise.mkdir(fileDirectory)
         }
     
-        const filename_all_data = path.join(__dirname, '..', 'data', `real_data_${today}`, 'all_data.json')
+        const filename_all_data = path.join(fileDirectory, 'all_data.json')
         await fsPromise.writeFile(filename_all_data, JSON.stringify(data, null, 4))
 
         const filename_master = path.join(fileDirectory, 'master.json')

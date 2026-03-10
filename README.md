@@ -21,4 +21,4 @@
 
 ## OR Just 
 1. ./init.sh 
-2. npm run start.
+2. npm run start.`

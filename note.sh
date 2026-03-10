@@ -3,6 +3,27 @@ firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-service=https
 firewall-cmd --reload
 
+# apt install git
+# apt install snapd
+# apt install openssh-server
+# sudo systemctl enable ssh --now
+
+snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+ssh-keygen -t rsa -b 4096 -C "s10183001@gmail.com"
+
+adduser ender777
+usermod -aG sudo ender777
+deluser ender777
+
+
+# how to renew the ssl certificate ?
+certbot certonly --standalone
+
+#!/bin/sh
+
+
 sudo apt update ;
 apt install net-tools;
 # apt install firewalld;
@@ -24,3 +45,5 @@ pip install --only-binary=:all: "tensorflow==2.13.*";
 
 # pip install -r py_package_req.txt --exists-action=i;
 npm install -d 
+
+deactivate

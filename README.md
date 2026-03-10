@@ -20,5 +20,7 @@
 3. `npm run start`
 
 ## OR Just 
-1. ./init.sh 
-2. npm run start.`
+1. ./init.sh
+2. 
+(1) npm run start.
+(2) npm run scheduling

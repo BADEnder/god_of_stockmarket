@@ -10,6 +10,10 @@ const all_query = {
     `
     DROP TABLE IF EXISTS best_model_data
     `,
+    query3: 
+    `
+    DROP TABLE IF EXISTS stock_buy_sell_ratio
+    `,
 
     
 }

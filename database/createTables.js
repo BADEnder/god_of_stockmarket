@@ -94,7 +94,25 @@ const all_query = {
         PRIMARY KEY (stock_id, data_date),
         CONSTRAINT FK_BEST_MODEL_DATA FOREIGN KEY(stock_id, data_date) REFERENCES best_model_data(stock_id, data_date)
     )
+    `,
+    query3:
     `
+    CREATE TABLE stock_buy_sell_ratio (
+    id SERIAL PRIMARY KEY,
+    date DATE NOT NULL,
+    stock_id VARCHAR(30) NOT NULL,
+    stock_name VARCHAR(30) NOT NULL,
+    price_change_ratio DECIMAL(10, 2),
+    close_price DECIMAL(10, 2),
+    trade_volume BIGINT,
+    buy_volume BIGINT,
+    sell_volume BIGINT,
+    external_ratio DECIMAL(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(date, stock_id) -- 確保同一支股票每天只會有一筆資料
+);
+    `
+
 }
 
 const main = async () => {

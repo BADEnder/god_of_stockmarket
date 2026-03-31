@@ -1,5 +1,5 @@
-let majorRunningIndex = false
 
+let majorRunningIndex = false
 const fs = require('fs')
 const fsPromise = fs.promises
 const path = require('path')
@@ -94,13 +94,46 @@ const runMajorSchedulingJob = async () => {
 
 }
 
+const runMinorSchedulingJob = () => {
+    let targetPath = path.join(__dirname, '..', 'models/collect_data.py')
+    let command = `python ${targetPath}`
+
+    console.log(command)
+    if (stock_id != 'UNKNOWN') {
+        exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
+            if (error) {
+                fs.writeFileSync(runningStatusPath, '0', 'utf-8')
+                console.error(`Execution Got Error:\n ${error}`)
+                return
+            }
+            console.log(`Execution Stdout:\n ${stdout}`)
+        })
+        
+
+    } 
+    exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
+        if (error) {
+            fs.writeFileSync(runningStatusPath, '0', 'utf-8')
+            console.error(`Execution Got Error:\n ${error}`)
+            return
+        }
+        console.log(`Execution Stdout:\n ${stdout}`)
+    })
+        
+}
 
 const mainFunction = async () => {
     const url = `${local_host}/api/getDataFromOpenSite`
     await axios.post(url)
     
-    console.log('dailyScheduling is running')
+    console.log('daily scheduling is running')
     runMajorSchedulingJob()
+}
+
+
+const minorFunction = async () => {
+    console.log('daily collecting data is running')
+    runMinorSchedulingJob()
 }
 
 
@@ -111,4 +144,11 @@ cron.schedule('0 1 8 * * *', async () => {
         majorRunningIndex = true
         mainFunction()
     }
+})
+
+minorFunction()
+cron.schedule('0 1 8 * * 1-5', async () => {
+
+        minorFunction()
+
 })

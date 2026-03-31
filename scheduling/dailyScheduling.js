@@ -102,7 +102,6 @@ const runMinorSchedulingJob = () => {
     if (stock_id != 'UNKNOWN') {
         exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
             if (error) {
-                fs.writeFileSync(runningStatusPath, '0', 'utf-8')
                 console.error(`Execution Got Error:\n ${error}`)
                 return
             }
@@ -113,7 +112,6 @@ const runMinorSchedulingJob = () => {
     } 
     exec(command, { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
         if (error) {
-            fs.writeFileSync(runningStatusPath, '0', 'utf-8')
             console.error(`Execution Got Error:\n ${error}`)
             return
         }

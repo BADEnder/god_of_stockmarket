@@ -31,7 +31,7 @@ const desideWebsiteCore = async(data) => {
         let result = data.filter((val) => {
             return Number(val.TradeVolume) >= 5*10**6 && checkDigit(val.Code)
         })
-        console.log('hello world:!!!!', result.length)
+        console.log('The Number of Target: ', result.length)
 
     
     

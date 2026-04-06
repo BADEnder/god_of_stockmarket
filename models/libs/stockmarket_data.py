@@ -105,24 +105,24 @@ def catch_data_from_finmind(stock_id, start_date, end_date, drop_columns):
     #     print('Cannot get data of investment from banks!!')
 
 
-    # 取得EPS資料（財報）
-    fs = dl.taiwan_stock_financial_statement(
-        stock_id=stock_id,
-        start_date=start_date,
-        end_date=end_date
-    )
-    eps_df = fs[fs['type'] == 'EPS'][['date', 'value']].rename(columns={'value': 'EPS'})
-    eps_df['date'] = pd.to_datetime(eps_df['date'])
+    # # 取得EPS資料（財報）
+    # fs = dl.taiwan_stock_financial_statement(
+    #     stock_id=stock_id,
+    #     start_date=start_date,
+    #     end_date=end_date
+    # )
+    # eps_df = fs[fs['type'] == 'EPS'][['date', 'value']].rename(columns={'value': 'EPS'})
+    # eps_df['date'] = pd.to_datetime(eps_df['date'])
 
-    # 取得每股淨值資料（資產負債表）
-    bs = dl.taiwan_stock_balance_sheet(
-        stock_id=stock_id,
-        start_date=start_date,
-        end_date=end_date
-    )
-    bvps_df = bs[bs['type'] == 'EquityAttributableToOwnersOfParent_per'][['date', 'value']] \
-            .rename(columns={'value': 'BVPS'})
-    bvps_df['date'] = pd.to_datetime(bvps_df['date'])
+    # # 取得每股淨值資料（資產負債表）
+    # bs = dl.taiwan_stock_balance_sheet(
+    #     stock_id=stock_id,
+    #     start_date=start_date,
+    #     end_date=end_date
+    # )
+    # bvps_df = bs[bs['type'] == 'EquityAttributableToOwnersOfParent_per'][['date', 'value']] \
+    #         .rename(columns={'value': 'BVPS'})
+    # bvps_df['date'] = pd.to_datetime(bvps_df['date'])
 
     # 將股票日資料轉為日期型態，並排序
     stock_data['date'] = pd.to_datetime(stock_data['date'])

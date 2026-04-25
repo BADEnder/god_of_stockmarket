@@ -171,9 +171,8 @@ const main = async (stock_id) => {
             )
 
             result = await getStockMarketData.json()
-
             showGraph(result[0])
-            console.log(result[0])
+
             // killAnimation('anime1')
     } catch (err) {
         console.log('err.name', err.name)

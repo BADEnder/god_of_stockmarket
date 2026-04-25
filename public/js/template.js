@@ -14,6 +14,10 @@ const headerTemplate = Vue.createApp({
                     name: "Stock Price Probability",
                     url: "/stock_price_probability"
                 },
+                {
+                    name: "History Data",
+                    url: "/history_data"
+                },
 
                 // {
                 //     name: "Setting",

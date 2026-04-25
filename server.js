@@ -39,10 +39,11 @@ app.use('/', require('./routes/homeRoutes'))
 // APIs
 app.use('/api/getTopInfo', require('./routes/api/getTopInfoRoute'))
 app.use('/api/getDataFromOpenSite', require('./routes/api/getDataFromOpenSiteRoute'))
-app.use('/api/get_home_data', require('./routes/api/get_home_data_route'))
-app.use('/api/get_trend_data', require('./routes/api/get_trend_data_route'))
-app.use('/api/get_probability_data', require('./routes/api/get_probability_data_route'))
+app.use('/api/get_home_data', require('./routes/api/homeDataRoute'))
+app.use('/api/get_trend_data', require('./routes/api/trendDataRoute'))
+app.use('/api/get_probability_data', require('./routes/api/probabilityDataRoute'))
 app.use('/api/getOtherInfoForStockMarket', require('./routes/api/getOtherInfoForStockMarketRoute'))
+app.use('/api/histroyData', require('./routes/api/histroyDataRoute'))
 // app.use('/api/pythonExecAPI', require('./routes/api/pythonExecAPIRoute'))
 
 app.all('*', (req, res) => {

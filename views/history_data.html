@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/home/table_style.css">
+    <title>Stock Martket Emperor</title>
+
+    <script src="/js/packages/vue@3.2.47-prod.js" defer></script>
+    <script src="/js/template.js" defer></script>
+    <script src="/js/packages/chart.js" ></script>
+    <script src="/js/packages/chartjs-adapter-date-fns.js" ></script>
+
+</head>
+<body>
+    <header id="header" class="header container" v-cloak></header>
+    
+    <main class="container p-3">
+        <div class="m-2 p-3 bd-3">
+                <div class="m-2 h3">Search:</div>
+                <hr>
+                <label class="m-2" for="stock_id"  >Stock_id:</label>
+                <input class="m-2" type="text" id="stock_id" value="2408">
+                <label class="m-2" for="start_date">Start Date: </label>
+                <input class="m-2" type="date" id="start_date" >
+                <label class="m-2" for="end_date" >End Date: </label>
+                <input class="m-2" type="date" id="end_date" >
+                <button class="m-2" id="submit" class="btn" onclick="search_data()">Submit</button>
+                <br>
+
+        </div>
+
+
+        <table id="content_container">
+            <tr>
+                <th>Date</th>
+                <th>Stock ID</th>
+                <th>Stock Name</th>
+                <th>Prce Change Ratio</th>
+                <th>Buy/Sell Ratio</th>
+                <th>Price</th>
+                <th>Trade Volume</th>
+            </tr>
+        <div class="t-body" id="t-body">
+        </div>
+
+        </table>
+
+        
+    </main>
+
+    <footer id="footer" class="footer container" v-cloak></footer>
+    <script src="/js/history_data.js" ></script>
+    <script src="/js/history_data_module.js" type="module" ></script>
+</body>
+</html>

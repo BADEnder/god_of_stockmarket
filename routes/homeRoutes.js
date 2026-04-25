@@ -17,6 +17,11 @@ router.get('/stock_price_probability(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname,  '..', 'views', 'stock_price_probability.html'))
 })
 
+router.get('/history_data(.html)?', (req, res) => {
+    req_query = req.query
+    res.sendFile(path.join(__dirname,  '..', 'views', 'history_data.html'))
+})
+
 
 
 module.exports = router
